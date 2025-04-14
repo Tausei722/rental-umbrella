@@ -29,6 +29,7 @@ STATUS_SEX = [
         ('female', '女性'),
         ('no answer', '解答しない'),
     ]
+
 class CustomUserManager(UserManager):
     use_in_migrations = True
 
