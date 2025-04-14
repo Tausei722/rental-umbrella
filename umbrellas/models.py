@@ -2,9 +2,7 @@ from django.db import models
 from django.contrib.auth.models import UserManager, AbstractUser
 
 # ユーザーDB(ユーザの基本情報と今時点でどの傘をレンタルしているかを記録)
-class CustomUserManager(UserManager):
-    use_in_migrations = True
-    STATUS_FACULTY = [
+STATUS_FACULTY = [
         ('Engineering', '工学部'),
         ('Agriculture', '農学部'),
         ('Science','理学部'),
@@ -17,7 +15,7 @@ class CustomUserManager(UserManager):
         ('other', '学外者'),
     ]
 
-    STATUS_GRADE = [
+STATUS_GRADE = [
         ('first', '学部1年'),
         ('second', '学部2年'),
         ('third', '学部3年'),
@@ -26,11 +24,13 @@ class CustomUserManager(UserManager):
         ('sixth', '院2年'),
     ]
 
-    STATUS_SEX = [
+STATUS_SEX = [
         ('male', '男性'),
         ('female', '女性'),
         ('no answer', '解答しない'),
     ]
+class CustomUserManager(UserManager):
+    use_in_migrations = True
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
@@ -48,7 +48,10 @@ class CustomUserManager(UserManager):
         max_length=225,
         choices=STATUS_SEX,
     )
-    time_stamp = models.DateField()
+    create_at = models.DateField()
+
+    def __str__(self):
+        return self.name
 
  
     def _create_user(self, email, username, password, **extra_fields):
@@ -90,12 +93,39 @@ class CustomUserManager(UserManager):
         return self._create_user(email, username, password, **extra_fields)
     
 
+STATUS_PRACE = [
+        ('Library', '図書館'),
+        ('North cafeteria', '北食堂'),
+        ('Central cafeteria', '中央食堂'),
+        ('Engineering faculty', '工学部棟'),
+        ('Agriculture faculty', '農学部棟'),
+        ('Sience faculty', '理系複合棟'),
+        ('Literal faculty', '文系複合棟'),
+        ('Senbaru domitory', '千原寮共用棟'),
+    ]
+
 class Umbrellas(models.Model):
     id = models.AutoField(primary_key=True)
-    Umbrella_name = models.CharField(max_length=225)
+    umbrella_name = models.CharField(max_length=225)
+    borrower = models.ForeignKey(CustomUserManager,null=True)
     prace = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default='available',  # デフォルトの選択肢
+        max_length=225,
+        choices=STATUS_PRACE,
     )
-    time_stamp = models.DateField()
+    last_lend = models.DateField()
+    create_at = models.DateField()
+
+    def __str__(self):
+        return self.umbrella_name
+
+
+class Prace(models.Model):
+    id = models.AutoField(primary_key=True)
+    prace = models.CharField(
+        max_length=225,
+        choices=STATUS_PRACE,
+    )
+    return_umbrellas = models.ManyToManyField(Umbrellas)
+
+    def __str__(self):
+        return self.prace
