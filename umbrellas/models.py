@@ -108,7 +108,7 @@ STATUS_PRACE = [
 class Umbrellas(models.Model):
     id = models.AutoField(primary_key=True)
     umbrella_name = models.CharField(max_length=225)
-    borrower = models.ForeignKey(CustomUserManager,null=True)
+    borrower = models.ForeignKey(CustomUserManager,null=True,on_delete=models.SET_NULL)
     prace = models.CharField(
         max_length=225,
         choices=STATUS_PRACE,
