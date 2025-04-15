@@ -1,18 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>サインインフォーム</title>
-</head>
-<body>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    {% for error in form.errors %}
-      <p style="color: red;">{{ error }}</p>
-    {% endfor %}
-    <button type="submit">送信</button>
-  </form>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}ホーム{% endblock %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  <div class="w-full text-center flex flex-col justify-center items-center gap-4">
+    <div class="w-1/2 grid grid-cols-[1fr_3fr] border-[#7d7d7d] border-2 px-3 py-2 rounded-md">
+      <label for="{{ form.name.id_for_label }}">名前</label>
+      <div class="border border-black w-fit rounded-full">
+        {{ form.name }}
+      </div>
+      {% if form.name.errors %}
+      <div class="error">
+        {{ form.name.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="w-1/2 grid grid-cols-[1fr_3fr] border-[#7d7d7d] border-2 px-3 py-2 rounded-md">
+      <label for="{{ form.email.id_for_label }}">メールアドレス</label>
+      <div class="border border-black w-fit rounded-full">
+        {{ form.email }}
+      </div>
+      {% if form.email.errors %}
+      <div class="error">
+        {{ form.email.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="w-1/2 grid grid-cols-[1fr_3fr] border-[#7d7d7d] border-2 px-3 py-2 rounded-md">
+      <label for="{{ form.password.id_for_label }}">パスワード</label>
+      <div class="border border-black w-fit rounded-full">
+        {{ form.password }}
+      </div>
+      {% if form.password.errors %}
+      <div class="error">
+        {{ form.password.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="w-1/2 grid grid-cols-[1fr_3fr] border-[#7d7d7d] border-2 px-3 py-2 rounded-md">
+      <label for="{{ form.faculty.id_for_label }}">学部</label>
+      <div class="border border-black w-fit rounded-full">
+        {{ form.faculty }}
+      </div>
+      {% if form.faculty.errors %}
+      <div class="error">
+        {{ form.faculty.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="w-1/2 grid grid-cols-[1fr_3fr] border-[#7d7d7d] border-2 px-3 py-2 rounded-md">
+      <label for="{{ form.grade.id_for_label }}">学年</label>
+      <div class="border border-black w-fit rounded-full">
+        {{ form.grade }}
+      </div>
+      {% if form.grade.errors %}
+      <div class="error">
+        {{ form.grade.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="w-1/2 grid grid-cols-[1fr_3fr] border-[#7d7d7d] border-2 px-3 py-2 rounded-md">
+      <label for="{{ form.sex.id_for_label }}">性別</label>
+      <div class="border border-black w-fit rounded-full">
+        {{ form.sex }}
+      </div>
+      {% if form.sex.errors %}
+      <div class="error">
+        {{ form.sex.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="bg-[#ca6fff] rounded-full px-4 py-2">送信</button>
+  </div>
+</form>
+
+{% endblock %}

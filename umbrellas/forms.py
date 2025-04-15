@@ -3,11 +3,42 @@ from .models import CustomUser
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
+# 学部等の情報を入れさせるとこまで
+class CustomForm(forms.ModelForm):
+    STATUS_FACULTY = [
+        ('Engineering', '工学部'),
+        ('Agriculture', '農学部'),
+        ('Science','理学部'),
+        ('Humanities and Social', '人文社会学部'),
+        ('International Regional Revitalization', '国際地域創生学部'),
+        ('Education', '教育学部'),
+        ('Medical', '医学部'),
+        ('Graduate school', '大学院'),
+        ('Parties involved', '関係者'),
+        ('other', '学外者'),
+    ]
 
-class CustomForm(forms.Form):
-    name = forms.CharField(max_length=50)
-    email = forms.EmailField(max_length=225)
-    password = forms.CharField(max_length=225)
+    STATUS_GRADE = [
+            ('first', '学部1年'),
+            ('second', '学部2年'),
+            ('third', '学部3年'),
+            ('fourth', '学部4年'),
+            ('fifth', '院1年'),
+            ('sixth', '院2年'),
+    ]
+
+    STATUS_SEX = [
+            ('male', '男性'),
+            ('female', '女性'),
+            ('no answer', '解答しない'),
+    ]
+
+    name = forms.CharField(label='名前')
+    email = forms.EmailField(label='メール')
+    password = forms.CharField(label='パスワード')
+    faculty = forms.ChoiceField(choices=STATUS_FACULTY, label='学部')
+    grade = forms.ChoiceField(choices=STATUS_GRADE, label='学年')
+    sex = forms.ChoiceField(choices=STATUS_SEX, label='性別')
 
     # パスワードのバリデーション機能
     def validate_user_password(self, password):
@@ -36,4 +67,4 @@ class CustomForm(forms.Form):
     
     class Meta:
         model = CustomUser
-        fields = ['name', 'email', 'password']
+        fields = ['name', 'email', 'password', 'faculty', 'grade', 'sex']

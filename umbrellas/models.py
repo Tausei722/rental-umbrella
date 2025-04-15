@@ -79,7 +79,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     faculty = models.CharField(max_length=225,choices=STATUS_FACULTY)
     grade = models.CharField(max_length=225,choices=STATUS_GRADE)
     sex = models.CharField(max_length=225,choices=STATUS_SEX)
-    create_at = models.DateField()
+    create_at = models.DateField(auto_now_add=True, null=True)
+    update_at = models.DateField(auto_now=True, null=True)
 
     # related_nameを指定して衝突を回避(djangoのデフォルトの設定のauth.Userモデルと競合しているらしい)
     groups = models.ManyToManyField(
@@ -121,7 +122,8 @@ class Umbrellas(models.Model):
     borrower = models.ForeignKey(CustomUser,null=True,on_delete=models.SET_NULL,related_name='borrowed_user')
     prace = models.CharField(max_length=225,choices=STATUS_PRACE)
     last_lend = models.DateField()
-    create_at = models.DateField()
+    create_at = models.DateField(auto_now_add=True, null=True)
+    update_at = models.DateField(auto_now=True, null=True)
 
     def __str__(self):
         return self.umbrella_name
@@ -142,6 +144,8 @@ class Prace(models.Model):
     id = models.AutoField(primary_key=True)
     prace_name = models.CharField(max_length=225,choices=STATUS_PRACE)
     return_umbrellas = models.ManyToManyField(Umbrellas,related_name='prace_return_umbrellas')
+    create_at = models.DateField(auto_now_add=True, null=True)
+    update_at = models.DateField(auto_now=True, null=True)
 
     def __str__(self):
         return self.prace
