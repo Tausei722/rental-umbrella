@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import UserManager, AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, BaseUserManager
 
 # ユーザーDB(ユーザの基本情報と今時点でどの傘をレンタルしているかを記録)
 STATUS_FACULTY = [
@@ -30,31 +30,9 @@ STATUS_SEX = [
         ('no answer', '解答しない'),
     ]
 
-class CustomUserManager(UserManager):
+class CustomUserManager(BaseUserManager):
     use_in_migrations = True
 
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=225)
-    password = models.CharField(max_length=225)
-    Faculty = models.CharField(
-        max_length=225,
-        choices=STATUS_FACULTY,
-    )
-    grade = models.CharField(
-        max_length=225,
-        choices=STATUS_GRADE,
-    )
-    sex = models.CharField(
-        max_length=225,
-        choices=STATUS_SEX,
-    )
-    create_at = models.DateField()
-
-    def __str__(self):
-        return self.name
-
- 
     def _create_user(self, email, username, password, **extra_fields):
         # create_user と create_superuser の共通処理
         if not email:
@@ -92,7 +70,27 @@ class CustomUserManager(UserManager):
             raise ValueError('Superuser must have is_superuser=True.')
  
         return self._create_user(email, username, password, **extra_fields)
-    
+
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=225)
+    password = models.CharField(max_length=225)
+    faculty = models.CharField(max_length=225,choices=STATUS_FACULTY)
+    grade = models.CharField(max_length=225,choices=STATUS_GRADE)
+    sex = models.CharField(max_length=225,choices=STATUS_SEX)
+    create_at = models.DateField()
+
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['name']
+
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return self.name
 
 STATUS_PRACE = [
         ('Library', '図書館'),
@@ -108,7 +106,7 @@ STATUS_PRACE = [
 class Umbrellas(models.Model):
     id = models.AutoField(primary_key=True)
     umbrella_name = models.CharField(max_length=225)
-    borrower = models.ForeignKey(CustomUserManager,null=True,on_delete=models.SET_NULL)
+    borrower = models.ForeignKey(CustomUser,null=True,on_delete=models.SET_NULL)
     prace = models.CharField(
         max_length=225,
         choices=STATUS_PRACE,
