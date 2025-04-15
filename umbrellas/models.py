@@ -81,6 +81,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     sex = models.CharField(max_length=225,choices=STATUS_SEX)
     create_at = models.DateField()
 
+    # related_nameを指定して衝突を回避(djangoのデフォルトの設定のauth.Userモデルと競合しているらしい)
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='customuser_groups',
+        blank=True
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='customuser_user_permissions',
+        blank=True
+    )
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -92,7 +104,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.name
 
-STATUS_PRACE = [
+class Umbrellas(models.Model):
+    STATUS_PRACE = [
         ('Library', '図書館'),
         ('North cafeteria', '北食堂'),
         ('Central cafeteria', '中央食堂'),
@@ -103,14 +116,10 @@ STATUS_PRACE = [
         ('Senbaru domitory', '千原寮共用棟'),
     ]
 
-class Umbrellas(models.Model):
     id = models.AutoField(primary_key=True)
     umbrella_name = models.CharField(max_length=225)
-    borrower = models.ForeignKey(CustomUser,null=True,on_delete=models.SET_NULL)
-    prace = models.CharField(
-        max_length=225,
-        choices=STATUS_PRACE,
-    )
+    borrower = models.ForeignKey(CustomUser,null=True,on_delete=models.SET_NULL,related_name='borrowed_user')
+    prace = models.CharField(max_length=225,choices=STATUS_PRACE)
     last_lend = models.DateField()
     create_at = models.DateField()
 
@@ -119,12 +128,20 @@ class Umbrellas(models.Model):
 
 
 class Prace(models.Model):
+    STATUS_PRACE = [
+        ('Library', '図書館'),
+        ('North cafeteria', '北食堂'),
+        ('Central cafeteria', '中央食堂'),
+        ('Engineering faculty', '工学部棟'),
+        ('Agriculture faculty', '農学部棟'),
+        ('Sience faculty', '理系複合棟'),
+        ('Literal faculty', '文系複合棟'),
+        ('Senbaru domitory', '千原寮共用棟'),
+    ]
+
     id = models.AutoField(primary_key=True)
-    prace = models.CharField(
-        max_length=225,
-        choices=STATUS_PRACE,
-    )
-    return_umbrellas = models.ManyToManyField(Umbrellas)
+    prace_name = models.CharField(max_length=225,choices=STATUS_PRACE)
+    return_umbrellas = models.ManyToManyField(Umbrellas,related_name='prace_return_umbrellas')
 
     def __str__(self):
         return self.prace
