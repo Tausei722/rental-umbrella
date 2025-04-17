@@ -33,12 +33,12 @@ class CustomForm(forms.ModelForm):
             ('no answer', '解答しない'),
     ]
 
-    name = forms.CharField(label='名前')
-    email = forms.EmailField(label='メール')
-    password = forms.CharField(label='パスワード')
-    faculty = forms.ChoiceField(choices=STATUS_FACULTY, label='学部')
-    grade = forms.ChoiceField(choices=STATUS_GRADE, label='学年')
-    sex = forms.ChoiceField(choices=STATUS_SEX, label='性別')
+    name = forms.CharField(label='名前',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
+    email = forms.EmailField(label='メール',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
+    password = forms.CharField(label='パスワード',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
+    faculty = forms.ChoiceField(choices=STATUS_FACULTY, label='学部',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
+    grade = forms.ChoiceField(choices=STATUS_GRADE, label='学年',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
+    sex = forms.ChoiceField(choices=STATUS_SEX, label='性別',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
 
     # パスワードのバリデーション機能
     def validate_user_password(self, password):

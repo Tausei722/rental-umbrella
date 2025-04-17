@@ -1,16 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}ホーム{% endblock %}
+{% block title %}サインイン{% endblock %}
 
 {% block content %}
 <form method="post">
   {% csrf_token %}
-  <div class="w-full text-center flex flex-col justify-center items-center gap-4">
-    <div class="w-1/2 grid grid-cols-[1fr_3fr] border-[#7d7d7d] border-2 px-3 py-2 rounded-md">
-      <label for="{{ form.name.id_for_label }}">名前</label>
-      <div class="border border-black w-fit rounded-full">
-        {{ form.name }}
-      </div>
+  <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
+    <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
+      <label class="w-fit h-full px-2" for="{{ form.name.id_for_label }}">名前</label>
+      {{ form.name }}
       {% if form.name.errors %}
       <div class="error">
         {{ form.name.errors }}
@@ -18,11 +16,9 @@
       {% endif %}
     </div>
 
-    <div class="w-1/2 grid grid-cols-[1fr_3fr] border-[#7d7d7d] border-2 px-3 py-2 rounded-md">
-      <label for="{{ form.email.id_for_label }}">メールアドレス</label>
-      <div class="border border-black w-fit rounded-full">
-        {{ form.email }}
-      </div>
+    <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
+      <label class="w-fit px-2" for="{{ form.email.id_for_label }}">メールアドレス</label>
+      {{ form.email }}
       {% if form.email.errors %}
       <div class="error">
         {{ form.email.errors }}
@@ -30,11 +26,9 @@
       {% endif %}
     </div>
 
-    <div class="w-1/2 grid grid-cols-[1fr_3fr] border-[#7d7d7d] border-2 px-3 py-2 rounded-md">
-      <label for="{{ form.password.id_for_label }}">パスワード</label>
-      <div class="border border-black w-fit rounded-full">
-        {{ form.password }}
-      </div>
+    <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
+      <label class="w-fit px-2" for="{{ form.password.id_for_label }}">パスワード</label>
+      {{ form.password }}
       {% if form.password.errors %}
       <div class="error">
         {{ form.password.errors }}
@@ -42,11 +36,9 @@
       {% endif %}
     </div>
 
-    <div class="w-1/2 grid grid-cols-[1fr_3fr] border-[#7d7d7d] border-2 px-3 py-2 rounded-md">
-      <label for="{{ form.faculty.id_for_label }}">学部</label>
-      <div class="border border-black w-fit rounded-full">
-        {{ form.faculty }}
-      </div>
+    <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
+      <label class="w-fit px-2" for="{{ form.faculty.id_for_label }}">学部</label>
+      {{ form.faculty }}
       {% if form.faculty.errors %}
       <div class="error">
         {{ form.faculty.errors }}
@@ -54,11 +46,9 @@
       {% endif %}
     </div>
 
-    <div class="w-1/2 grid grid-cols-[1fr_3fr] border-[#7d7d7d] border-2 px-3 py-2 rounded-md">
-      <label for="{{ form.grade.id_for_label }}">学年</label>
-      <div class="border border-black w-fit rounded-full">
-        {{ form.grade }}
-      </div>
+    <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
+      <label class="w-fit px-2" for="{{ form.grade.id_for_label }}">学年</label>
+      {{ form.grade }}
       {% if form.grade.errors %}
       <div class="error">
         {{ form.grade.errors }}
@@ -66,11 +56,9 @@
       {% endif %}
     </div>
 
-    <div class="w-1/2 grid grid-cols-[1fr_3fr] border-[#7d7d7d] border-2 px-3 py-2 rounded-md">
-      <label for="{{ form.sex.id_for_label }}">性別</label>
-      <div class="border border-black w-fit rounded-full">
-        {{ form.sex }}
-      </div>
+    <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
+      <label class="w-fit px-2" for="{{ form.sex.id_for_label }}">性別</label>
+      {{ form.sex }}
       {% if form.sex.errors %}
       <div class="error">
         {{ form.sex.errors }}
@@ -78,7 +66,7 @@
       {% endif %}
     </div>
 
-    <button type="submit" class="bg-[#ca6fff] rounded-full px-4 py-2">送信</button>
+    <button type="submit" class="btn-color mt-8 mb-16 px-8 py-8">送信</button>
   </div>
 </form>
 
