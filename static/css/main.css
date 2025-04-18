@@ -1,0 +1,36 @@
+@font-face {
+    font-family: 'keion-font'; /* 任意のフォント名 */
+    src: url('../fonts/keifont.ttf') format('truetype'); /* フォントファイルへのパス */
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'keion-font', Arial, sans-serif;
+}
+
+.content-shadow {
+    box-shadow: 0 0 8px #808080;
+}
+
+.inline-shadow {
+    box-shadow: 2px 2px 4px gray;
+}
+
+.content-color {
+    background: #8cd5ff2c;
+}
+
+.btn-color {
+    color: white;
+    background-color: #8cd4ff;
+    border: #808080 solid 2px;
+    border-radius: calc(infinity * 1px);
+    text-align: center;
+    opacity: 1;
+}
+
+.btn-color:hover {
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
