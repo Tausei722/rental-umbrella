@@ -8,12 +8,8 @@ from django.shortcuts import render, redirect
 class HomeView(View):
     def get(self, request):
         return render(request, "pages/home.html")
-<<<<<<< HEAD
-
-=======
     
 # サインインフォーム
->>>>>>> b9851a6b5cdcd12d17268426567097f3f768a64b
 class FormView(View):
     def get(self, request):
         form = CustomForm()

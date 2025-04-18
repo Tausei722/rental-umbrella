@@ -1,9 +1,6 @@
 Django==4.0.3
-<<<<<<< HEAD
-=======
 django-allauth
 asgiref==3.4.1
 pytz==2021.1
 sqlperse==0.4.2
 stripe==3.5.0
->>>>>>> b9851a6b5cdcd12d17268426567097f3f768a64b
