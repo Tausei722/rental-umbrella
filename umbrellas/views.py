@@ -9,6 +9,11 @@ class HomeView(View):
     def get(self, request):
         return render(request, "pages/home.html")
     
+# ログイン画面
+class LoginView(View):
+    def get(self, request):
+        return render(request, "pages/login.html")
+
 # サインインフォーム
 class FormView(View):
     def get(self, request):
