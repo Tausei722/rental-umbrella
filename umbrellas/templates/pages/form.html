@@ -3,7 +3,7 @@
 {% block title %}サインイン{% endblock %}
 
 {% block content %}
-<form method="post">
+<form method="post" action="/form/">
   {% csrf_token %}
   <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
     <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
