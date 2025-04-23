@@ -13,13 +13,14 @@ class CustomForm(forms.ModelForm):
     sex = forms.ChoiceField(choices=STATUS_SEX, label='性別',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
 
     # パスワードのバリデーション機能(パスワードだけバリデーションを分ける)
-    def clean_password(self, password):
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
         try:
             validate_password(password)
-            return password
         except ValidationError as e:
             
             raise forms.ValidationError(e.message)
+        return password
 
     # バリデーション
     def clean(self):
@@ -29,11 +30,8 @@ class CustomForm(forms.ModelForm):
         password = cleaned_data.get('password')
 
         # 名前とメール両方を要求
-        if not name or not email:
+        if not name or not email or not password :
             raise forms.ValidationError("名前とメールアドレスとパスワードは必須です。")
-        
-        # パスワードのバリデーション
-        password = self.clean_password(password)
 
         return cleaned_data
     
