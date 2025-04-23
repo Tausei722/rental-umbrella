@@ -16,11 +16,10 @@ class CustomForm(forms.ModelForm):
     def clean_password(self, password):
         try:
             validate_password(password)
+            return password
         except ValidationError as e:
             
             raise forms.ValidationError(e.message)
-
-        return password
 
     # バリデーション
     def clean(self):
