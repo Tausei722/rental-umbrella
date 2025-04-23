@@ -29,11 +29,18 @@
     <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
       <label class="w-fit px-2" for="{{ form.password.id_for_label }}">パスワード</label>
       {{ form.password }}
-      {% if form.password.errors %}
+      {% if form.errors %}
       <div class="error">
-        {{ form.password.errors }}
+          {% for field, errors in form.errors.items %}
+              <p><strong>{{ field }}</strong>:
+                  {% for error in errors %}
+                      {{ error }}
+                  {% endfor %}
+              </p>
+          {% endfor %}
       </div>
-      {% endif %}
+  {% endif %}
+  
     </div>
 
     <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">

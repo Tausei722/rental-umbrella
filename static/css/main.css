@@ -34,3 +34,8 @@ body {
     opacity: 0.7;
     transition: all 0.3s ease;
 }
+
+.error {
+    border: solid 3px red;
+    outline: 0;
+}
