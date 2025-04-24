@@ -3,6 +3,7 @@
 from django.views import View
 from .forms import CustomForm
 from django.shortcuts import render, redirect
+import pdb
 
 # ホームページのビュー
 class HomeView(View):
@@ -29,7 +30,7 @@ class FormView(View):
 
         # 失敗したらページにエラーメッセージを表示
         return render(request, "pages/form.html", {'form': form})
-    
+
 class SigninSuccessfullView(View):
     def get(self, request):
         return render(request, "pages/successfull_signin.html")
