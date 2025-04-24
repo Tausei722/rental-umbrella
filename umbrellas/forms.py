@@ -53,6 +53,8 @@ class CustomForm(forms.ModelForm):
     def save(self, commit=True, *args, **kwargs):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
-        self.save(commit=True)
+        
+        if commit:
+            user.save()
 
         return user

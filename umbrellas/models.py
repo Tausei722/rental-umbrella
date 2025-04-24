@@ -149,3 +149,11 @@ class Prace(models.Model):
 
     def __str__(self):
         return self.prace
+    
+# どの傘が誰にいつ借りられたか（返されたか）を記録するDB
+class RentalLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    create_at = models.DateField(auto_now=True, null=True)
+    user = models.ForeignKey(CustomUser,null=True,on_delete=models.DO_NOTHING,related_name='active_user')
+    umbrella = models.ForeignKey(Umbrellas,nul=True,on_delete=models.DO_NOTHING,related_name='rentaled_umbrella')
+    is_rental = models.BooleanField(default=False)
