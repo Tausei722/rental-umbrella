@@ -29,3 +29,11 @@ class FormView(View):
 class SigninSuccessfullView(View):
     def get(self, request):
         return render(request, "pages/successfull_signin.html")
+    
+class RentalForm(View):
+    def get(self, request):
+        return redirect('successfull_signin')
+    
+class RentalSuccessfullView(View):
+    def get(self, request):
+        return render(request, "pages/successfull_rental.html")
