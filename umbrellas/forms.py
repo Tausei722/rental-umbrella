@@ -12,15 +12,19 @@ class CustomForm(forms.ModelForm):
     grade = forms.ChoiceField(choices=STATUS_GRADE, label='学年',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
     sex = forms.ChoiceField(choices=STATUS_SEX, label='性別',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
 
+    # フォームデータのセット
+    class Meta:
+        model = CustomUser
+        fields = ['name', 'email', 'password', 'faculty', 'grade', 'sex']
+
     # パスワードのバリデーション機能(パスワードだけバリデーションを分ける)
     def clean_password(self):
         password = self.cleaned_data.get('password')
         try:
-            print(password,"dsfgdhtyfjgj")
             validate_password(password)
         except ValidationError as e:
+            # エラーがでたらエラーのプロパティに入れる
             self.errors.password = e.messages
-            print(self.errors.password,"axscfdgfh")
             raise forms.ValidationError(e.messages)
         return password
 
@@ -46,14 +50,9 @@ class CustomForm(forms.ModelForm):
 
     # オーバーライドしてsava()関数をログインフォーム用に上書き
     # パスワードをハッシュ化する処理を追加
-    def save(self, commit=True):
+    def save(self, commit=True, *args, **kwargs):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
+        self.save(commit=True)
 
-        if commit:
-            user.save()
         return user
-
-    class Meta:
-        model = CustomUser
-        fields = ['name', 'email', 'password', 'faculty', 'grade', 'sex']
