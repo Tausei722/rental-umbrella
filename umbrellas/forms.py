@@ -16,10 +16,12 @@ class CustomForm(forms.ModelForm):
     def clean_password(self):
         password = self.cleaned_data.get('password')
         try:
+            print(password,"dsfgdhtyfjgj")
             validate_password(password)
         except ValidationError as e:
-            
-            raise forms.ValidationError(e.message)
+            self.errors.password = e.messages
+            print(self.errors.password,"axscfdgfh")
+            raise forms.ValidationError(e.messages)
         return password
 
     # バリデーション
@@ -28,13 +30,20 @@ class CustomForm(forms.ModelForm):
         name = cleaned_data.get('name')
         email = cleaned_data.get('email')
         password = cleaned_data.get('password')
+        faculty = cleaned_data.get('faculty')
+        grade = cleaned_data.get('grade')
+        sex = cleaned_data.get('sex')
 
         # 名前とメール両方を要求
         if not name or not email or not password :
             raise forms.ValidationError("名前とメールアドレスとパスワードは必須です。")
 
+        password = self.clean_password()
+
+        if not faculty or not grade or not sex:
+            raise forms.ValidationError('学部、年齢、性別を入力してください')
         return cleaned_data
-    
+
     # オーバーライドしてsava()関数をログインフォーム用に上書き
     # パスワードをハッシュ化する処理を追加
     def save(self, commit=True):

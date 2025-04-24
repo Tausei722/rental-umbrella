@@ -20,7 +20,6 @@ class FormView(View):
         form = CustomForm(request.POST)
         # 入力した情報をDBにセーブし成功ページへリダイレクト
         if form.is_valid():
-            pdb.set_trace()
             form.save()
             return redirect('successfull_signin')
 

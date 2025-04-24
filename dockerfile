@@ -16,4 +16,4 @@ RUN chmod -R 777 /usr/local/lib/python3.11/site-packages
 COPY . .
 
 # コンテナ内で実行するコマンドを指定
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "--noreload"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
