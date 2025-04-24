@@ -1,38 +1,10 @@
 from django import forms
-from .models import CustomUser
+from .models import CustomUser, STATUS_FACULTY, STATUS_GRADE, STATUS_SEX
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
 # 学部等の情報を入れさせるとこまで
 class CustomForm(forms.ModelForm):
-    STATUS_FACULTY = [
-        ('Engineering', '工学部'),
-        ('Agriculture', '農学部'),
-        ('Science','理学部'),
-        ('Humanities and Social', '人文社会学部'),
-        ('International Regional Revitalization', '国際地域創生学部'),
-        ('Education', '教育学部'),
-        ('Medical', '医学部'),
-        ('Graduate school', '大学院'),
-        ('Parties involved', '関係者'),
-        ('other', '学外者'),
-    ]
-
-    STATUS_GRADE = [
-            ('first', '学部1年'),
-            ('second', '学部2年'),
-            ('third', '学部3年'),
-            ('fourth', '学部4年'),
-            ('fifth', '院1年'),
-            ('sixth', '院2年'),
-    ]
-
-    STATUS_SEX = [
-            ('male', '男性'),
-            ('female', '女性'),
-            ('no answer', '解答しない'),
-    ]
-
     name = forms.CharField(label='名前',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
     email = forms.EmailField(label='メール',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
     password = forms.CharField(label='パスワード',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
@@ -40,14 +12,21 @@ class CustomForm(forms.ModelForm):
     grade = forms.ChoiceField(choices=STATUS_GRADE, label='学年',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
     sex = forms.ChoiceField(choices=STATUS_SEX, label='性別',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
 
-    # パスワードのバリデーション機能
-    def validate_user_password(self, password):
+    # フォームデータのセット
+    class Meta:
+        model = CustomUser
+        fields = ['name', 'email', 'password', 'faculty', 'grade', 'sex']
+
+    # パスワードのバリデーション機能(パスワードだけバリデーションを分ける)
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
         try:
             validate_password(password)
-            print("パスワードが有効です！")
         except ValidationError as e:
-            print("エラー:", e.messages)
-            raise ValidationError(e.messages)
+            # エラーがでたらエラーのプロパティに入れる
+            self.errors.password = e.messages
+            raise forms.ValidationError(e.messages)
+        return password
 
     # バリデーション
     def clean(self):
@@ -55,16 +34,27 @@ class CustomForm(forms.ModelForm):
         name = cleaned_data.get('name')
         email = cleaned_data.get('email')
         password = cleaned_data.get('password')
+        faculty = cleaned_data.get('faculty')
+        grade = cleaned_data.get('grade')
+        sex = cleaned_data.get('sex')
 
         # 名前とメール両方を要求
-        if not name or not email or not password:
+        if not name or not email or not password :
             raise forms.ValidationError("名前とメールアドレスとパスワードは必須です。")
-        
-        # パスワードのバリデーション
-        self.validate_user_password(password)
 
+        password = self.clean_password()
+
+        if not faculty or not grade or not sex:
+            raise forms.ValidationError('学部、年齢、性別を入力してください')
         return cleaned_data
-    
-    class Meta:
-        model = CustomUser
-        fields = ['name', 'email', 'password', 'faculty', 'grade', 'sex']
+
+    # オーバーライドしてsava()関数をログインフォーム用に上書き
+    # パスワードをハッシュ化する処理を追加
+    def save(self, commit=True, *args, **kwargs):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        
+        if commit:
+            user.save()
+
+        return user
