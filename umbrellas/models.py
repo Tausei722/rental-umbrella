@@ -104,6 +104,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = "アカウント"
+        verbose_name_plural = "アカウント画面"
 
 class Umbrellas(models.Model):
     STATUS_PRACE = [
@@ -128,6 +132,9 @@ class Umbrellas(models.Model):
     def __str__(self):
         return self.umbrella_name
 
+    class Meta:
+        verbose_name = "傘"
+        verbose_name_plural = "傘の情報"
 
 class Prace(models.Model):
     STATUS_PRACE = [
@@ -148,7 +155,7 @@ class Prace(models.Model):
     update_at = models.DateField(auto_now=True, null=True)
 
     def __str__(self):
-        return self.prace
+        return self.prace_name
     
 # どの傘が誰にいつ借りられたか（返されたか）を記録するDB
 class RentalLog(models.Model):
@@ -157,3 +164,7 @@ class RentalLog(models.Model):
     user = models.ForeignKey(CustomUser,null=False,on_delete=models.DO_NOTHING,related_name='active_user')
     umbrella = models.ForeignKey(Umbrellas,null=False,on_delete=models.DO_NOTHING,related_name='rentaled_umbrella')
     is_rental = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "履歴"
+        verbose_name_plural = "レンタルログ画面"
