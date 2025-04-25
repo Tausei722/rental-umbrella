@@ -1,0 +1,19 @@
+/* ヘッダーの背景色変更 */
+body {
+    background-color: 8cd4ff;
+}
+
+#header {
+    background-color: #0078D7; /* 青系の色 */
+    color: white;
+}
+
+/* サイト管理の背景色 */
+.module {
+    background-color: #f8f9fa;
+}
+
+/* サイト管理タイトル */
+#content h1 {
+    color: #808080; /* 赤系のタイトル */
+}
