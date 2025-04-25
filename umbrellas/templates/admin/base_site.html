@@ -1,7 +1,11 @@
 {% extends "admin/base_site.html" %}
-{% load static %}
 
 {% block extrahead %}
-  {{ block.super }}
-  <link rel="stylesheet" href="{% static 'admin/css/custom.css' %}">
+<style>
+    /* ✅ デフォルトのスタイルを無効化 */
+    link[rel="stylesheet"][href*="admin/css/"] {
+        display: none !important;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'admin/css/main.css' %}">
 {% endblock %}
