@@ -6,14 +6,15 @@
 
 /* VARIABLE DEFINITIONS */
 :root {
-  --primary: #0078D7;
-  --secondary: #f8f9fa;
+  --primary: #8cd5ff2c;
+  ;
+  --secondary: #0078D7;
   --accent: #f5dd5d;
-  --primary-fg: #fff;
+  --primary-fg: #dbc500;
 
   --body-fg: #333;
-  --body-bg: #fff;
-  --body-quiet-color: #666;
+  --body-bg: #ffffff;
+  --body-quiet-color: #808080;
   --body-loud-color: #000;
 
   --header-color: #ffc;
@@ -22,12 +23,12 @@
   --header-link-color: var(--primary-fg);
 
   --breadcrumbs-fg: #c4dce8;
-  --breadcrumbs-link-fg: var(--body-bg);
+  --breadcrumbs-link-fg: #808080;
   --breadcrumbs-bg: var(--primary);
 
-  --link-fg: #a9d4f7;
-  --link-hover-color: #0078D7;
-  --link-selected-fg: #5b80b2;
+  --link-fg: #0078D7;
+  --link-hover-color: #82c7ff;
+  --link-selected-fg: #808080;
 
   --hairline-color: #e8e8e8;
   --border-color: #ccc;
@@ -65,9 +66,9 @@
     --body-fg: #eeeeee;
     --body-bg: #121212;
     --body-quiet-color: #e0e0e0;
-    --body-loud-color: #ffffff;
+    --body-loud-color: #264b5d;
 
-    --breadcrumbs-link-fg: #e0e0e0;
+    --breadcrumbs-link-fg: #264b5d;
     --breadcrumbs-bg: var(--primary);
 
     --link-fg: #81d4fa;
@@ -517,7 +518,7 @@ select[multiple] {
 /* FORM BUTTONS */
 
 .button, input[type=submit], input[type=button], .submit-row input, a.button {
-    background: var(--button-bg);
+    background: #609ab6;
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
@@ -533,7 +534,7 @@ a.button {
 .button:active, input[type=submit]:active, input[type=button]:active,
 .button:focus, input[type=submit]:focus, input[type=button]:focus,
 .button:hover, input[type=submit]:hover, input[type=button]:hover {
-    background: var(--button-hover-bg);
+    background: var(--button-bg);
 }
 
 .button[disabled], input[type=submit][disabled], input[type=button][disabled] {
@@ -742,7 +743,7 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 }
 
 a.deletelink:link, a.deletelink:visited {
-    color: #CC3434; /* XXX Probably unused? */
+    color: #ffffff; /* XXX Probably unused? */
 }
 
 a.deletelink:focus, a.deletelink:hover {
