@@ -73,14 +73,14 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=225)
-    password = models.CharField(max_length=225)
-    faculty = models.CharField(max_length=225,choices=STATUS_FACULTY)
-    grade = models.CharField(max_length=225,choices=STATUS_GRADE)
-    sex = models.CharField(max_length=225,choices=STATUS_SEX)
-    create_at = models.DateField(auto_now_add=True, null=True)
-    update_at = models.DateField(auto_now=True, null=True)
+    name = models.CharField("名前",max_length=50)
+    email = models.EmailField("メールアドレス",max_length=225)
+    password = models.CharField("パスワード",max_length=225)
+    faculty = models.CharField("学部",max_length=225,choices=STATUS_FACULTY)
+    grade = models.CharField("学年",max_length=225,choices=STATUS_GRADE)
+    sex = models.CharField("性別",max_length=225,choices=STATUS_SEX)
+    create_at = models.DateField("作成日",auto_now_add=True, null=True)
+    update_at = models.DateField("変更された日",auto_now=True, null=True)
 
     # related_nameを指定して衝突を回避(djangoのデフォルトの設定のauth.Userモデルと競合しているらしい)
     groups = models.ManyToManyField(

@@ -6,6 +6,9 @@ class CustomAdminSite(admin.AdminSite):
     site_header = "☔シェア傘管理画面☔"
     index_title = "傘レンタルシステム管理ページ"
 
+    list_display = ("name", "email", "faculty", "grade", "sex")  # ✅ 表示するフィールドをカスタマイズ
+    search_fields = ("name", "email", "faculty", "grade", "sex")
+
 admin_site = CustomAdminSite(name='custom_admin')
 
 admin.site = admin_site
