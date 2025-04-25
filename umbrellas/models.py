@@ -123,7 +123,7 @@ class Umbrellas(models.Model):
 
     id = models.AutoField(primary_key=True)
     umbrella_name = models.CharField("傘整理番号",max_length=225)
-    borrower = models.ForeignKey("貸出者",CustomUser,null=True,on_delete=models.SET_NULL,related_name='borrowed_user')
+    borrower = models.ForeignKey(CustomUser,verbose_name="貸出者",null=True,on_delete=models.DO_NOTHING,related_name='borrowed_user')
     prace = models.CharField("場所",max_length=225,choices=STATUS_PRACE)
     last_lend = models.DateField("最後に貸出(返却)した日")
     create_at = models.DateField("入荷日",auto_now_add=True, null=True)
@@ -161,8 +161,8 @@ class Prace(models.Model):
 class RentalLog(models.Model):
     id = models.AutoField(primary_key=True)
     create_at = models.DateField("ログ",auto_now=True, null=True)
-    user = models.ForeignKey("ユーザー",CustomUser,null=False,on_delete=models.DO_NOTHING,related_name='active_user')
-    umbrella = models.ForeignKey("傘",Umbrellas,null=False,on_delete=models.DO_NOTHING,related_name='rentaled_umbrella')
+    user = models.ForeignKey(CustomUser,verbose_name="ユーザー",null=False,on_delete=models.DO_NOTHING,related_name='active_user')
+    umbrella = models.ForeignKey(Umbrellas,verbose_name="傘",null=False,on_delete=models.DO_NOTHING,related_name='rentaled_umbrella')
     is_rental = models.BooleanField("貸出または返却",default=False)
 
     class Meta:
