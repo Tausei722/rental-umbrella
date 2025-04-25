@@ -23,7 +23,7 @@
   --header-link-color: var(--primary-fg);
 
   --breadcrumbs-fg: #c4dce8;
-  --breadcrumbs-link-fg: var(--body-bg);
+  --breadcrumbs-link-fg: #808080;
   --breadcrumbs-bg: var(--primary);
 
   --link-fg: #0078D7;
@@ -66,7 +66,7 @@
     --body-fg: #eeeeee;
     --body-bg: #121212;
     --body-quiet-color: #e0e0e0;
-    --body-loud-color: #ffffff;
+    --body-loud-color: #264b5d;
 
     --breadcrumbs-link-fg: #264b5d;
     --breadcrumbs-bg: var(--primary);
@@ -518,7 +518,7 @@ select[multiple] {
 /* FORM BUTTONS */
 
 .button, input[type=submit], input[type=button], .submit-row input, a.button {
-    background: var(--button-bg);
+    background: #609ab6;
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
@@ -534,7 +534,7 @@ a.button {
 .button:active, input[type=submit]:active, input[type=button]:active,
 .button:focus, input[type=submit]:focus, input[type=button]:focus,
 .button:hover, input[type=submit]:hover, input[type=button]:hover {
-    background: var(--button-hover-bg);
+    background: var(--button-bg);
 }
 
 .button[disabled], input[type=submit][disabled], input[type=button][disabled] {
@@ -743,7 +743,7 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 }
 
 a.deletelink:link, a.deletelink:visited {
-    color: #CC3434; /* XXX Probably unused? */
+    color: #ffffff; /* XXX Probably unused? */
 }
 
 a.deletelink:focus, a.deletelink:hover {
