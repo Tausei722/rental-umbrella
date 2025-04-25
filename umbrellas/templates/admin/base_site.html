@@ -1,0 +1,16 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block extrahead %}
+<style>
+    /* ✅ デフォルトのスタイルを無効化 */
+    link[rel="stylesheet"][href*="admin/css/"] {
+        display: none !important;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'admin/css/main.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1>✅ ここに変更が反映されるかテスト！</h1>
+  {{ block.super }}
+{% endblock %}
