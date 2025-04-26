@@ -73,7 +73,7 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
-    name = models.CharField("名前",max_length=50)
+    name = models.CharField("名前",max_length=50,unique=True)
     email = models.EmailField("メールアドレス",max_length=225)
     password = models.CharField("パスワード",max_length=225)
     faculty = models.CharField("学部",max_length=225,choices=STATUS_FACULTY)
@@ -82,6 +82,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     create_at = models.DateField("作成日",auto_now_add=True, null=True)
     update_at = models.DateField("変更された日",auto_now=True, null=True)
 
+    USERNAME_FIELD = 'name'
+    REQUIRED_FIELDS = ['name', 'password']
     # related_nameを指定して衝突を回避(djangoのデフォルトの設定のauth.Userモデルと競合しているらしい)
     groups = models.ManyToManyField(
         'auth.Group',
@@ -96,9 +98,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']
 
     objects = CustomUserManager()
 

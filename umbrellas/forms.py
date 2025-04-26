@@ -2,6 +2,7 @@ from django import forms
 from .models import CustomUser, STATUS_FACULTY, STATUS_GRADE, STATUS_SEX
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import AuthenticationForm
 
 # 学部等の情報を入れさせるとこまで
 class CustomForm(forms.ModelForm):
@@ -58,3 +59,31 @@ class CustomForm(forms.ModelForm):
             user.save()
 
         return user
+    
+# ログインフォームのフォーム作成
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(label='名前',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
+    password = forms.CharField(label='パスワード',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
+
+    class Meta:
+        model = CustomUser
+        fields = ['name', 'password']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        
+        username = cleaned_data.get('name')
+        password = cleaned_data.get('password')
+
+        # 名前とメール両方を要求
+        if not username or not password :
+            raise forms.ValidationError("名前とパスワードは必須です。")
+        
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            # エラーがでたらエラーのプロパティに入れる
+            self.errors.password = e.messages
+            raise forms.ValidationError(e.messages)
+        return password
+
