@@ -57,7 +57,7 @@ ROOT_URLCONF = 'rental_umbrella.urls'
 TEMPLATES = [
 	{
 		'BACKEND': 'django.template.backends.django.DjangoTemplates',
-		'DIRS': [os.path.join(BASE_DIR, 'templates')],
+		'DIRS': [os.path.join(BASE_DIR, 'umbrellas/templates')], 
 		'APP_DIRS': True,
 		'OPTIONS': {
 			'context_processors': [
@@ -102,6 +102,11 @@ AUTH_PASSWORD_VALIDATORS = [
 	},
 ]
 
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
+# ここを明示的にしないと認証できなかった
+AUTH_USER_MODEL = "umbrellas.CustomUser"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -127,3 +132,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/umbrellas/login/'
+
+# 自動ログインのための設定
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False

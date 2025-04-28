@@ -16,4 +16,4 @@ RUN chmod -R 777 /usr/local/lib/python3.11/site-packages
 COPY . .
 
 # コンテナ内で実行するコマンドを指定
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["bash", "-c", "python manage.py collectstatic --noinput && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
