@@ -19,6 +19,6 @@ from django.urls import path, include
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin_share_kasa/', admin.site.urls),
     path('', include('umbrellas.urls')),
 ]
