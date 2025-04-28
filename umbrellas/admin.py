@@ -12,9 +12,9 @@ class CustomUserAdmin(admin.ModelAdmin):
     list_filter = ("faculty", "grade", "sex")
 
 class UmbrellaAdmin(admin.ModelAdmin):
-    list_display = ("umbrella_name", "borrower", "prace", "last_lend", "create_at", "update_at")
+    list_display = ("umbrella_name", "borrower", "place", "last_lend", "create_at", "update_at")
     search_fields = ("borrower__icontains",)
-    list_filter = ("prace", "last_lend")
+    list_filter = ("place", "last_lend")
 
 admin_site = CustomAdminSite(name='custom_admin')
 
