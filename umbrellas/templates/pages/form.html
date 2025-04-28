@@ -40,6 +40,11 @@
     </div>
 
     <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
+      <label class="w-fit px-2" for="{{ form.password_confirm.id_for_label }}">パスワード確認</label>
+      {{ form.password_confirm }}
+    </div>
+
+    <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
       <label class="w-fit px-2" for="{{ form.faculty.id_for_label }}">学部</label>
       {{ form.faculty }}
       {% if form.faculty.errors %}
