@@ -45,16 +45,6 @@ class SigninView(TemplateView):
 class SigninSuccessfullView(TemplateView):
     def get(self, request):
         return render(request, "pages/successfull_signin.html")
-<<<<<<< HEAD
-    
-class RentalForm(View):
-    def get(self, request):
-        return redirect('successfull_signin')
-    
-class RentalSuccessfullView(View):
-    def get(self, request):
-        return render(request, "pages/successfull_rental.html")
-=======
 
 class CustomLoginView(LoginView):
     template_name = "pages/login.html"
@@ -83,4 +73,3 @@ class LogoutView(TemplateView):
     def get(self, request):
         logout(request)
         return redirect("/login/")
->>>>>>> develop
