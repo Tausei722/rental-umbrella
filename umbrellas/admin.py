@@ -7,8 +7,8 @@ class CustomAdminSite(admin.AdminSite):
     index_title = "傘レンタルシステム管理ページ"
 
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ("name", "email", "faculty", "grade", "sex") 
-    search_fields = ("name__icontains",)
+    list_display = ("username", "email", "faculty", "grade", "sex") 
+    search_fields = ("username__icontains",)
     list_filter = ("faculty", "grade", "sex")
 
 class UmbrellaAdmin(admin.ModelAdmin):
