@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
-from umbrellas.models import Umbrellas
+from umbrellas.models import Umbrellas, UmbrellaLog
 import secrets
+import json
 
 class Command(BaseCommand):
     help = "傘のデータを作成する"
@@ -42,6 +43,11 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.WARNING(f"⚠️ 既に存在します: {umbrella}"))
             
             # ログに入れるための傘の名前のdict
-            umbrellas_data.append(umbrella_name)
+            umbrellas_data.append({"umbrella_name": umbrella_name, "place": place})
 
             i += 1
+
+        # ログのデータを挿入
+        UmbrellaLog.objects.create(
+            umbrella_log = {"log_data": umbrellas_data},
+        )
