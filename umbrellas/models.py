@@ -7,7 +7,7 @@ STATUS_FACULTY = [
         ('Agriculture', '農学部'),
         ('Science','理学部'),
         ('Humanities and Social', '人文社会学部'),
-        ('International Regional Revitalization', '国際地域創生学部'),
+        ('International Regional Revitalization', '国際地域創造学部'),
         ('Education', '教育学部'),
         ('Medical', '医学部'),
         ('Graduate school', '大学院'),
@@ -33,14 +33,14 @@ STATUS_SEX = [
 class CustomUserManager(BaseUserManager):
     use_in_migrations = True
 
-    def _create_user(self, email, username, password, **extra_fields):
+    def _create_user(self, username, email, password, **extra_fields):
         # create_user と create_superuser の共通処理
-        if not email:
-            raise ValueError('email must be set')
         if not username:
             raise ValueError('username must be set')
+        if not email:
+            raise ValueError('email must be set')
  
-        user = self.model(email=email, username=username, **extra_fields)
+        user = self.model(username=username, email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
  
@@ -48,15 +48,15 @@ class CustomUserManager(BaseUserManager):
  
     def create_user(self, username, email=None, password=None, **extra_fields):
  
-        if not email:
-            raise ValueError('email must be set')
         if not username:
             raise ValueError('username must be set')
- 
+        if not email:
+            raise ValueError('email must be set')
+
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
  
-        return self._create_user(email, username, password, **extra_fields)
+        return self._create_user(username, email, password, **extra_fields)
  
     def create_superuser(self, username, email=None, password=None, **extra_fields):
  
@@ -69,21 +69,22 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
  
-        return self._create_user(email, username, password, **extra_fields)
+        return self._create_user(username, email, password, **extra_fields)
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
-    name = models.CharField("名前",max_length=50,unique=True)
+    username = models.CharField("名前",max_length=50,unique=True)
     email = models.EmailField("メールアドレス",max_length=225)
     password = models.CharField("パスワード",max_length=225)
     faculty = models.CharField("学部",max_length=225,choices=STATUS_FACULTY)
     grade = models.CharField("学年",max_length=225,choices=STATUS_GRADE)
     sex = models.CharField("性別",max_length=225,choices=STATUS_SEX)
-    create_at = models.DateField("作成日",auto_now_add=True, null=True)
+    create_at = models.DateField("登録日",auto_now_add=True, null=True)
     update_at = models.DateField("変更された日",auto_now=True, null=True)
 
-    USERNAME_FIELD = 'name'
-    REQUIRED_FIELDS = ['name', 'password']
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["email"]
+
     # related_nameを指定して衝突を回避(djangoのデフォルトの設定のauth.Userモデルと競合しているらしい)
     groups = models.ManyToManyField(
         'auth.Group',
@@ -101,8 +102,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomUserManager()
 
+    def set_password(self, raw_password):
+        super().set_password(raw_password) 
+
     def __str__(self):
-        return self.name
+        return self.username
     
     class Meta:
         verbose_name = "アカウント"

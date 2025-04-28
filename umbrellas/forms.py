@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 
 # 学部等の情報を入れさせるとこまで
 class CustomForm(forms.ModelForm):
-    name = forms.CharField(label='名前',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
+    username = forms.CharField(label='名前',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
     email = forms.EmailField(label='メール',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
     password = forms.CharField(label='パスワード',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
     faculty = forms.ChoiceField(choices=STATUS_FACULTY, label='学部',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
@@ -16,7 +16,7 @@ class CustomForm(forms.ModelForm):
     # フォームデータのセット
     class Meta:
         model = CustomUser
-        fields = ['name', 'email', 'password', 'faculty', 'grade', 'sex']
+        fields = ['username', 'email', 'password', 'faculty', 'grade', 'sex']
 
     # パスワードのバリデーション機能(パスワードだけバリデーションを分ける)
     def clean_password(self):
@@ -25,14 +25,14 @@ class CustomForm(forms.ModelForm):
             validate_password(password)
         except ValidationError as e:
             # エラーがでたらエラーのプロパティに入れる
-            self.errors.password = e.messages
+            self.add_error("password", e.messages)
             raise forms.ValidationError(e.messages)
         return password
 
     # バリデーション
     def clean(self):
         cleaned_data = super().clean()
-        name = cleaned_data.get('name')
+        username = cleaned_data.get('username')
         email = cleaned_data.get('email')
         password = cleaned_data.get('password')
         faculty = cleaned_data.get('faculty')
@@ -40,7 +40,7 @@ class CustomForm(forms.ModelForm):
         sex = cleaned_data.get('sex')
 
         # 名前とメール両方を要求
-        if not name or not email or not password :
+        if not username or not email or not password :
             raise forms.ValidationError("名前とメールアドレスとパスワードは必須です。")
 
         password = self.clean_password()
@@ -51,10 +51,14 @@ class CustomForm(forms.ModelForm):
 
     # オーバーライドしてsava()関数をログインフォーム用に上書き
     # パスワードをハッシュ化する処理を追加
-    def save(self, commit=True, *args, **kwargs):
+    def save(self, commit=True):
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password"])
-        
+
+        # パスワードをハッシュ化
+        password = self.cleaned_data.get("password")
+        if password:
+            user.set_password(password)
+
         if commit:
             user.save()
 
@@ -63,16 +67,16 @@ class CustomForm(forms.ModelForm):
 # ログインフォームのフォーム作成
 class LoginForm(AuthenticationForm):
     username = forms.CharField(label='名前',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
-    password = forms.CharField(label='パスワード',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
+    password = forms.CharField(label='パスワード',widget=forms.PasswordInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
 
     class Meta:
         model = CustomUser
-        fields = ['name', 'password']
+        fields = ['username', 'password']
 
     def clean(self):
         cleaned_data = super().clean()
-        
-        username = cleaned_data.get('name')
+
+        username = cleaned_data.get('username')
         password = cleaned_data.get('password')
 
         # 名前とメール両方を要求
@@ -83,7 +87,6 @@ class LoginForm(AuthenticationForm):
             validate_password(password)
         except ValidationError as e:
             # エラーがでたらエラーのプロパティに入れる
-            self.errors.password = e.messages
+            self.add_error("password", e.messages)
             raise forms.ValidationError(e.messages)
-        return password
-
+        return cleaned_data

@@ -1,19 +1,32 @@
 # umbrellas/views.py
 
-from django.views import View
+from django.views.generic import TemplateView
 from .forms import CustomForm, LoginForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import login,authenticate
+from django.contrib.auth import login, authenticate, logout
 
 # ホームページのビュー
-class HomeView(View, LoginRequiredMixin):
-    def get(self, request):
-        return render(request, "pages/home.html")
-    
+class HomeView(LoginRequiredMixin, TemplateView):
+    template_name = "pages/home.html"
+    login_url = "/login/"
+    redirect_field_name = "next"
+
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context["username"] = self.request.user.username
+            return context
+
 # サインインフォーム
-class SigninView(View):
+class SigninView(TemplateView):
+    template_name = "pages/form.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("home")
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request):
         form = CustomForm()
         return render(request, "pages/form.html", {'form': form})
@@ -29,14 +42,13 @@ class SigninView(View):
         return render(request, "pages/form.html", {'form': form})
 
 # サインイン完了画面
-class SigninSuccessfullView(View):
+class SigninSuccessfullView(TemplateView):
     def get(self, request):
         return render(request, "pages/successfull_signin.html")
 
-# ログイン画面
 class CustomLoginView(LoginView):
     template_name = "pages/login.html"
-    form_class = LoginForm
+    authentication_form = LoginForm
 
     def get_success_url(self):
         success_redirect_url = self.request.GET.get("next") or "/"
@@ -44,14 +56,20 @@ class CustomLoginView(LoginView):
         return success_redirect_url
 
     def post(self, request):
-        form = LoginForm(request, data=request.POST)
-        
+        form = LoginForm(data=request.POST)
+
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
             user = authenticate(request, username=username, password=password)
-            print(user,"ghjklgfvbjuyg",username,password)
+
             if user is not None:
                 login(request, user)
                 return redirect(self.get_success_url())
+
         return render(request, "pages/login.html", {"form": form})
+
+class LogoutView(TemplateView):
+    def get(self, request):
+        logout(request)
+        return redirect("/login/")
