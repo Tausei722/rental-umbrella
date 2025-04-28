@@ -2,6 +2,7 @@
 
 from django.views.generic import TemplateView
 from .forms import CustomForm, LoginForm
+from .models import Umbrellas
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -69,7 +70,11 @@ class CustomLoginView(LoginView):
 
         return render(request, "pages/login.html", {"form": form})
 
+# ログアウトの処理
 class LogoutView(TemplateView):
     def get(self, request):
         logout(request)
         return redirect("/login/")
+
+class RentalForm(LoginRequiredMixin, TemplateView):
+    template_name = "pages/rental.html"

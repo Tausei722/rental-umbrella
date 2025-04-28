@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}レンタルフォーム{% endblock %}
+
+{% block content %}
+<form method="post" action="/rental/">
+  {% csrf_token %}
+  <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
+    <button type="submit" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8">レンタル</button>
+    <button type="submit" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8">キャンセル</button>
+  </div>
+</form>
+
+{% endblock %}
