@@ -15,10 +15,13 @@
         {% endfor %}
       {% endif %}
     </div>
-    <button type="submit" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">レンタル</button>
-    <button type="submit" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 pointer-events-none line-through">返却する</button>
-    <button type="submit" class="hidden btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">返却</button>
-    <button type="submit" class="hidden w-2/3 text-3xl mt-8 mb-16 px-8 py-8 pointer-events-none">レンタル</button>
+    {% if is_rentaled %}
+      <button type="submit" name="lend" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">レンタル</button>
+      <button type="submit" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 pointer-events-none line-through">返却する</button>
+    {% else %}
+      <button type="submit" name="return" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">返却</button>
+      <button type="submit" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 pointer-events-none line-through">レンタル</button>
+    {% endif %}
   </div>
 </form>
 

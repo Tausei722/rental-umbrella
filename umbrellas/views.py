@@ -93,7 +93,15 @@ class RentalForm(LoginRequiredMixin, TemplateView):
         return context
     
     def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
+        # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
+        try:
+            is_rentaled = Umbrellas.objects.get(borrower=request.user)
+            messages.error(request, "返却するには傘番号をフォームに入力してください")
+
+        except ObjectDoesNotExist:
+            return render(request, "pages/rental_another.html", {"is_rentaled": True})
+
+        return render(request, "pages/rental_another.html", {"is_rentaled": False})
     
     def post(self, request, **kwargs):
         context = self.get_context_data()
@@ -112,12 +120,20 @@ class RentalForm(LoginRequiredMixin, TemplateView):
 
         return render(request, "pages/successfull_rental.html")
 
-# 数字入力で傘借りる{'view': <umbrellas.views.RentalForm object at 0x7f76e2a3a710>, 'pk': '44c6b9e5d9ca9760', 'user': <SimpleLazyObject: <CustomUser: rio>>}
+# 数字入力で傘借りる
 class RentalAnotherForm(LoginRequiredMixin, TemplateView):
     template_name = "pages/rental_another.html"
 
     def get(self, request):
-         return render(request, "pages/rental_another.html")
+        # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
+        try:
+            is_rentaled = Umbrellas.objects.get(borrower=request.user)
+            messages.error(request, "返却するには傘番号をフォームに入力してください")
+
+        except ObjectDoesNotExist:
+            return render(request, "pages/rental_another.html", {"is_rentaled": True})
+
+        return render(request, "pages/rental_another.html", {"is_rentaled": False})
     
     def post(self, request):
         umbrella_name = request.POST.get('umbrella_number')
