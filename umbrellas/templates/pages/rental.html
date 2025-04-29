@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}レンタルフォーム{% endblock %}
+{% block title %}QRコードでレンタルするフォーム{% endblock %}
 
 {% block content %}
 <form method="post" action="{% url 'rental' pk=pk %}">
@@ -12,11 +12,11 @@
       {% endfor %}
     {% endif %}
     {% if is_rentaled %}
-      <button type="submit" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">レンタル</button>
+      <button type="submit" name="lend" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">レンタル</button>
       <!-- ホームに戻す -->
       <button class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">キャンセル</button>
     {% else %}
-      <button type="submit" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">返却</button>
+      <button type="submit" name="return" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">返却</button>
       <!-- ホームに戻す -->
       <button type="submit" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8">キャンセル</button>
     {% endif %}

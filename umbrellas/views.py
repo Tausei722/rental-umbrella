@@ -105,20 +105,35 @@ class RentalForm(LoginRequiredMixin, TemplateView):
     
     def post(self, request, **kwargs):
         context = self.get_context_data()
-        try:
+
+        # 借りるときの処理
+        if "lend" in request.POST:
+            try:
+                rental_umbrella = Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
+                
+                # すでにborrowerがいた場合はエラーを変えす
+                if rental_umbrella.borrower is not None:
+                    messages.error(request, "❌ その傘はすでに借りられているか、返却されていません")
+                    return redirect(request.path) 
+                else:
+                    rental_umbrella.borrower = CustomUser.objects.get(username=context["user"])
+                    rental_umbrella.save()
+                    return render(request, "pages/successfull_rental.html")
+            except ValueError as e:
+                return redirect(request.path)
+
+        # 返すときの処理
+        elif "return" in request.POST:
             rental_umbrella = Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
-            
-            if rental_umbrella.borrower is not None:
-                messages.error(request, "❌ その傘はすでに借りられているか、返却されていません")
-                return redirect(request.path) 
+            print(rental_umbrella.borrower,"sfgrtr")
+
+            # 借りている人と今返却フォームを操作している人が同じか見る
+            if rental_umbrella.borrower == request.user:
+                rental_umbrella.borrower = None
+                return render(request, "pages/successfull_return.html")
             else:
-                rental_umbrella.borrower = CustomUser.objects.get(username=context["user"])
-                rental_umbrella.save()
-        except ValueError as e:
-            return redirect(request.path)
-
-
-        return render(request, "pages/successfull_rental.html")
+                messages.error(request, "❌ その傘は別の人に借りられています")
+                return redirect(request.path)
 
 # 数字入力で傘借りる
 class RentalAnotherForm(LoginRequiredMixin, TemplateView):
@@ -138,16 +153,33 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
     def post(self, request):
         umbrella_name = request.POST.get('umbrella_number')
 
-        try:
-            umbrella = Umbrellas.objects.get(umbrella_name=umbrella_name)
-        except ObjectDoesNotExist:
-            messages.error(request, "❌ 傘が見つかりませんでした！")
-            return redirect(request.path)
-        
-        if umbrella.borrower is not None:
-            messages.error(request, "❌ その傘はすでに借りられているか、返却されていません")
-            return redirect(request.path) 
-        else:
-            url = "rental/" + str(umbrella_name)
-            print(url)
-            return redirect(url)
+        # 借りるときの処理
+        if "lend" in request.POST:
+            try:
+                umbrella = Umbrellas.objects.get(umbrella_name=umbrella_name)
+            except ObjectDoesNotExist:
+                messages.error(request, "❌ 傘が見つかりませんでした！")
+                return redirect(request.path)
+            
+            if umbrella.borrower is not None:
+                messages.error(request, "❌ その傘はすでに借りられているか、返却されていません")
+                return redirect(request.path) 
+            else:
+                url = "rental/" + str(umbrella_name)
+                print(url)
+                return redirect(url)
+
+        # 返すときの処理
+        elif "return" in request.POST:
+            rental_umbrella = Umbrellas.objects.get(umbrella_name=umbrella_name)
+            print(rental_umbrella.borrower,"sfgrtr")
+
+            # 借りている人と今返却フォームを操作している人が同じか見る
+            if rental_umbrella.borrower == request.user:
+                rental_umbrella.borrower = None
+                rental_umbrella.save()
+                return render(request, "pages/successfull_return.html")
+            else:
+                messages.error(request, "❌ その傘は別の人に借りられています")
+                return redirect(request.path)
+
