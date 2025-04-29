@@ -96,3 +96,17 @@ class LoginForm(AuthenticationForm):
             self.add_error("password", e.messages)
             raise forms.ValidationError(e.messages)
         return cleaned_data
+
+# 傘の入荷フォーム(管理画面)
+class UmbrellaCreationForm(forms.Form):
+    new_umbrellas = forms.IntegerField(label="作成する傘の数", min_value=1, required=True,widget=forms.NumberInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
+    place = forms.ChoiceField(label="傘の場所", choices=[
+        ('Library', '図書館'),
+        ('North cafeteria', '北食堂'),
+        ('Central cafeteria', '中央食堂'),
+        ('Engineering faculty', '工学部棟'),
+        ('Agriculture faculty', '農学部棟'),
+        ('Sience faculty', '理系複合棟'),
+        ('Literal faculty', '文系複合棟'),
+        ('Senbaru domitory', '千原寮共用棟'),
+    ], required=True)

@@ -22,7 +22,7 @@ class Command(BaseCommand):
         parser.add_argument("place", type=str, choices=self.STATUS_PRACE, help="傘の場所を選択")
 
     def handle(self, *args, **options):
-        umbrellas_data = []
+        umbrellas_data = {}
 
         # 入力を取得
         new_umbrellas = options["new_umbrellas"]
@@ -49,5 +49,5 @@ class Command(BaseCommand):
 
         # ログのデータを挿入
         UmbrellaLog.objects.create(
-            umbrella_log = {"log_data": umbrellas_data},
+            umbrella_log = umbrellas_data,
         )

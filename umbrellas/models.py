@@ -128,7 +128,7 @@ class Umbrellas(models.Model):
     umbrella_name = models.CharField("傘整理番号",max_length=225)
     borrower = models.ForeignKey(CustomUser,verbose_name="貸出者",null=True,on_delete=models.DO_NOTHING,related_name='borrowed_user')
     place = models.CharField("場所",max_length=225,choices=STATUS_PRACE)
-    last_lend = models.DateField("最後に貸出(返却)した日")
+    last_lend = models.DateField("最後に貸出(返却)した日", null=True)
     create_at = models.DateField("入荷日",auto_now_add=True, null=True)
     update_at = models.DateField("最後に貸出(返却)した日",auto_now=True, null=True)
 
@@ -146,6 +146,10 @@ class UmbrellaLog(models.Model):
 
     def __str__(self):
         return self.umbrella_log
+    
+    class Meta:
+        verbose_name = "傘入荷ログ"
+        verbose_name_plural = "傘の入荷ログ"
 
 class Prace(models.Model):
     STATUS_PRACE = [
