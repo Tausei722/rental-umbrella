@@ -2,7 +2,7 @@
 
 from django.views.generic import TemplateView
 from .forms import CustomForm, LoginForm
-from .models import Umbrellas
+from .models import Umbrellas, CustomUser
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -80,23 +80,37 @@ class LogoutView(TemplateView):
         logout(request)
         return redirect("/login/")
 
+# QRで傘借りる
 class RentalForm(LoginRequiredMixin, TemplateView):
     template_name = "pages/rental.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(self.kwargs["pk"])
+        context["pk"] = self.kwargs.get("pk")
+        context["user"] = self.request.user
         return context
     
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
     
     def post(self, request, **kwargs):
-        rental_umbrella = Umbrellas.object.get(self.kwargs['pk'])
+        context = self.get_context_data()
+        try:
+            rental_umbrella = Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
+            rental_umbrella.borrower = CustomUser.objects.get(username=context["user"])
+            rental_umbrella.save()
+        except ValueError as e:
+            return redirect(request.path)
 
-    
+
+        return render(request, "pages/successfull_rental.html")
+
+# 数字入力で傘借りる{'view': <umbrellas.views.RentalForm object at 0x7f76e2a3a710>, 'pk': '44c6b9e5d9ca9760', 'user': <SimpleLazyObject: <CustomUser: rio>>}
 class RentalAnotherForm(LoginRequiredMixin, TemplateView):
     template_name = "pages/rental_another.html"
 
     def get(self, request):
          return render(request, "pages/rental_another.html")
+    
+    def post(self, request):
+        pass
