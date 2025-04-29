@@ -6,15 +6,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="{% static 'js/menu.js' %}" defer></script>
     <link rel="stylesheet" href="{% static 'css/humbergerMenu.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <title>Rental Umbrella</title>
 </head>
 <header class="bg-[#8cd4ff] p-4 content-shadow">
-  <h1 class="title">シェア傘</h1>
+  <h1 class="title mr-auto">シェア傘</h1>
   <div class="hamburger-menu p-3">
     <div class="hamburger-icon">
-      <span ></span>
+      <span></span>
       <span></span>
       <span></span>
     </div>
@@ -25,7 +26,9 @@
       <a href="#">お問い合わせ</a>
     </nav>
   </div>
-   <script type="text/javascript" src="menu.js"></script>
+  
+  <script src="menu.js" defer></script>
+
 </header>
 
 <body class="">

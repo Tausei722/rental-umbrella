@@ -1,3 +1,9 @@
+header {
+    display:flex;
+    align-items: center; 
+
+}
+
 /* ハンバーガーアイコン */
 .hamburger-icon {
   cursor: pointer;
@@ -14,6 +20,7 @@
 }
 .title {
     font-size: 25px;
+    text-indent: 0px
 }
 
 /* ハンバーガーの線 */
@@ -29,6 +36,7 @@
 /* 1本目（上の線） */
 .hamburger-icon span:nth-child(1) {
   top: 0;
+  justify-content: flex-endf
 
 }
 
@@ -44,25 +52,25 @@
 }
 
 /* メニュー（スライドアニメーション） */
+/* メニューの基本スタイル */
 .menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 250px; /* メニューの幅 */
-  height: 100vh;
-  background: #fff;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-  transform: translateX(-100%);
-  transition: transform 0.3s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-}
-
-/* メニューが開いたとき */
-.menu.active {
-  transform: translateX(0);
-}
+    position: fixed; /* body直下に配置 */
+    top: -100%; /* 初期位置を画面外（上）に設定 */
+    left: 0;
+    width: 100%; /* メニュー幅を画面全体に設定 */
+    background:#8cd5ff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: top 0.3s ease-in-out; /* スムーズなスライド効果 */
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    z-index: 1000; /* 他の要素より前に表示 */
+  }
+  
+  /* メニューがアクティブなとき */
+  .menu.active {
+    top: 0; /* 表示位置 */
+  }
 
 /* 閉じるボタン */
 .close-btn {
