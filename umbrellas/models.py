@@ -126,9 +126,9 @@ class Umbrellas(models.Model):
 
     id = models.AutoField(primary_key=True)
     umbrella_name = models.CharField("傘整理番号",max_length=225)
-    borrower = models.ForeignKey(CustomUser,verbose_name="貸出者",null=True,on_delete=models.DO_NOTHING,related_name='borrowed_user')
-    prace = models.CharField("場所",max_length=225,choices=STATUS_PRACE)
-    last_lend = models.DateField("最後に貸出(返却)した日")
+    borrower = models.ForeignKey(CustomUser,verbose_name="貸出者",null=True,on_delete=models.SET_NULL,related_name='borrowed_user')
+    place = models.CharField("場所",max_length=225,choices=STATUS_PRACE)
+    last_lend = models.DateField("最後に貸出(返却)した日", null=True)
     create_at = models.DateField("入荷日",auto_now_add=True, null=True)
     update_at = models.DateField("最後に貸出(返却)した日",auto_now=True, null=True)
 
@@ -138,6 +138,18 @@ class Umbrellas(models.Model):
     class Meta:
         verbose_name = "傘"
         verbose_name_plural = "傘の情報"
+
+class UmbrellaLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    umbrella_log = models.JSONField("傘の入荷ログ", default=dict)
+    create_at = models.DateField("入荷日",auto_now_add=True, null=True)
+
+    def __str__(self):
+        return self.umbrella_log
+    
+    class Meta:
+        verbose_name = "傘入荷ログ"
+        verbose_name_plural = "傘の入荷ログ"
 
 class Prace(models.Model):
     STATUS_PRACE = [

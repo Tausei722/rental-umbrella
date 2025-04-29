@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}数字入力でレンタルするフォーム{% endblock %}
+
+{% block content %}
+<form method="post" action="/rental/">
+  {% csrf_token %}
+  <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
+    <div class="p-12 mb-12">
+      <label for="入力フォーム">傘番号入力フォーム</label>
+      <input type="text" name="umbrella_number" class="border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-center text-3xl"/>
+      {% if messages %}
+        {% for message in messages %}
+          <p class="text-red-500">{{ message }}</p>  <!-- 🚀 エラーメッセージを表示 -->
+        {% endfor %}
+      {% endif %}
+    </div>
+    {% if is_rentaled %}
+      <button type="submit" name="lend" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">レンタル</button>
+      <button type="submit" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 pointer-events-none line-through">返却する</button>
+    {% else %}
+      <button type="submit" name="return" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">返却</button>
+      <button type="submit" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 pointer-events-none line-through">レンタル</button>
+    {% endif %}
+  </div>
+</form>
+
+{% endblock %}

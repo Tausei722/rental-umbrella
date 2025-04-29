@@ -30,7 +30,22 @@ body {
     opacity: 1;
 }
 
+.btn-color-second {
+    color: black;
+    background-color: #808080;
+    border: #808080 solid 2px;
+    border-radius: calc(infinity * 1px);
+    text-align: center;
+    opacity: 1;
+}
+
+
 .btn-color:hover {
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.btn-color-second:hover {
     opacity: 0.7;
     transition: all 0.3s ease;
 }
