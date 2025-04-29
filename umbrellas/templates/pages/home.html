@@ -3,7 +3,12 @@
 {% block title %}ホーム{% endblock %}
 
 {% block content %}
-<h1>{{ username }} さん！</h1>
-<h2>ホームページへようこそ</h2>
-<p>これはホームページの内容です。</p>
+  <h1>{{ username }} さん！</h1>
+  <h2>ホームページへようこそ</h2>
+  <p>これはホームページの内容です。</p>
+  {% if rental_umbrella %}
+    <h2>現在,番号 {{ rental_umbrella}}の傘を借りています</h2>
+  {% else %}
+    <h2>現在借りている傘はありません</h2>
+  {% endif %}
 {% endblock %}

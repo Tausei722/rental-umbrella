@@ -19,6 +19,12 @@ class HomeView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
             context["username"] = self.request.user.username
+
+            try:
+                rental_umbrella = Umbrellas.objects.get(borrower=self.request.user)
+            except ObjectDoesNotExist:
+                rental_umbrella = None
+            context["rental_umbrella"] = rental_umbrella
             return context
 
 # サインインフォーム
@@ -59,7 +65,6 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         success_redirect_url = self.request.GET.get("next") or "/"
-        print("asdfghjh:",success_redirect_url)
         return success_redirect_url
 
     def post(self, request):
@@ -99,9 +104,9 @@ class RentalForm(LoginRequiredMixin, TemplateView):
             messages.error(request, "返却するには傘番号をフォームに入力してください")
 
         except ObjectDoesNotExist:
-            return render(request, "pages/rental_another.html", {"is_rentaled": True})
+            return render(request, "pages/rental.html", {"is_rentaled": True, "pk": self.kwargs['pk']})
 
-        return render(request, "pages/rental_another.html", {"is_rentaled": False})
+        return render(request, "pages/rental.html", {"is_rentaled": False, "pk": self.kwargs['pk']})
     
     def post(self, request, **kwargs):
         context = self.get_context_data()

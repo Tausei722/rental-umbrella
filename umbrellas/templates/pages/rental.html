@@ -8,11 +8,11 @@
   <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
     {% if messages %}
       {% for message in messages %}
-        <p class="text-red-500">{{ message }}</p>  <!-- 🚀 エラーメッセージを表示 -->
+        <p class="text-red-500">{{ message }}</p>
       {% endfor %}
     {% endif %}
     {% if is_rentaled %}
-      <button type="submit" name="lend" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">レンタル</button>
+      <button type="submit" name="lend" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">レンタルしますか？</button>
       <!-- ホームに戻す -->
       <button class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">キャンセル</button>
     {% else %}
