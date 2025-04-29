@@ -83,3 +83,15 @@ class RentalForm(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         print(self.kwargs["pk"])
         return context
+    
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+    
+    def post(self, request):
+        pass
+    
+class RentalAnotherForm(LoginRequiredMixin, TemplateView):
+    template_name = "pages/rental_another.html"
+
+    def get(self, request):
+         return render(request, "pages/rental_another.html")
