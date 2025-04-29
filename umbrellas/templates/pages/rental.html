@@ -6,8 +6,13 @@
 <form method="post" action="{% url 'rental' pk=pk %}">
   {% csrf_token %}
   <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
+    {% if messages %}
+      {% for message in messages %}
+        <p class="text-red-500">{{ message }}</p>  <!-- 🚀 エラーメッセージを表示 -->
+      {% endfor %}
+    {% endif %}
     <button type="submit" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">レンタル</button>
-    <button type="submit" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">キャンセル</button>
+    <button class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">キャンセル</button>
   </div>
 </form>
 

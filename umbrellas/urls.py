@@ -10,5 +10,5 @@ urlpatterns = [
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name="logout"),
     path('rental/', RentalAnotherForm.as_view(), name="rental_another"),
-    path('rental/<str:pk>', RentalForm.as_view(), name="rental"),
+    path('rental/rental/<str:pk>', RentalForm.as_view(), name="rental"),
 ]

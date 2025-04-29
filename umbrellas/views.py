@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 
 # ホームページのビュー
 class HomeView(LoginRequiredMixin, TemplateView):
@@ -97,8 +99,13 @@ class RentalForm(LoginRequiredMixin, TemplateView):
         context = self.get_context_data()
         try:
             rental_umbrella = Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
-            rental_umbrella.borrower = CustomUser.objects.get(username=context["user"])
-            rental_umbrella.save()
+            
+            if rental_umbrella.borrower is not None:
+                messages.error(request, "❌ その傘はすでに借りられているか、返却されていません")
+                return redirect(request.path) 
+            else:
+                rental_umbrella.borrower = CustomUser.objects.get(username=context["user"])
+                rental_umbrella.save()
         except ValueError as e:
             return redirect(request.path)
 
@@ -113,4 +120,18 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
          return render(request, "pages/rental_another.html")
     
     def post(self, request):
-        pass
+        umbrella_name = request.POST.get('umbrella_number')
+
+        try:
+            umbrella = Umbrellas.objects.get(umbrella_name=umbrella_name)
+        except ObjectDoesNotExist:
+            messages.error(request, "❌ 傘が見つかりませんでした！")
+            return redirect(request.path)
+        
+        if umbrella.borrower is not None:
+            messages.error(request, "❌ その傘はすでに借りられているか、返却されていません")
+            return redirect(request.path) 
+        else:
+            url = "rental/" + str(umbrella_name)
+            print(url)
+            return redirect(url)

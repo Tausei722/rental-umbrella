@@ -31,7 +31,7 @@ class Command(BaseCommand):
         i = 1
         for _ in range(new_umbrellas):
             # ランダム文字生成
-            umbrella_name = secrets.token_hex(8)
+            umbrella_name = secrets.token_hex(3)
             # 傘生成
             umbrella, created = Umbrellas.objects.get_or_create(
                 umbrella_name = umbrella_name,
@@ -43,7 +43,9 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.WARNING(f"⚠️ 既に存在します: {umbrella}"))
             
             # ログに入れるための傘の名前のdict
-            umbrellas_data.append({"umbrella_name": umbrella_name, "place": place})
+            umbrellas_data['umbrella_name'] = umbrella_name
+            umbrellas_data['place'] = place
+            umbrellas_data['borrower'] = None
 
             i += 1
 

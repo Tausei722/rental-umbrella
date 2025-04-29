@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser, STATUS_FACULTY, STATUS_GRADE, STATUS_SEX
+from .models import CustomUser, Umbrellas, STATUS_FACULTY, STATUS_GRADE, STATUS_SEX
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import AuthenticationForm
@@ -111,3 +111,14 @@ class UmbrellaCreationForm(forms.Form):
         ('Literal faculty', '文系複合棟'),
         ('Senbaru domitory', '千原寮共用棟'),
     ], required=True)
+
+class UmbrellaForm(forms.ModelForm):
+    class Meta:
+        model = Umbrellas
+        fields = ["umbrella_name", "borrower", "place", "last_lend"]
+
+    borrower = forms.ModelChoiceField(
+        queryset=CustomUser.objects.all(),
+        required=False,
+        label='貸出者'
+    )

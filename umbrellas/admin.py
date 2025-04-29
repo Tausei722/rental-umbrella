@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import CustomUser, Umbrellas, RentalLog, UmbrellaLog
+from .forms import UmbrellaForm
 from umbrellas.management.commands.createUmbrella import Command
 
 from django.urls import path
@@ -22,6 +23,7 @@ class UmbrellaAdmin(admin.ModelAdmin):
     search_fields = ("borrower__icontains",)
     list_filter = ("place", "last_lend")
     actions = ["create_umbrella_view"]
+    form = UmbrellaForm
 
     # 管理画面にカスタムURLを追加して、フォームを表示
     def get_urls(self):
@@ -54,7 +56,6 @@ class UmbrellaAdmin(admin.ModelAdmin):
     def create_buttons(self, obj):
         """管理画面にボタンを表示"""
         return format_html(
-            '<a class="button" href="/admin_share_kasa/umbrellas/create_umbrella_action/">🌂 傘を追加</a> '
             '<a class="button bg-blue-500 text-white px-4 py-2 rounded" href="/admin_share_kasa/umbrellas/umbrellas/create_umbrella/">📦 入荷した傘を追加</a>'
         )
 
