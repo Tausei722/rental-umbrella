@@ -1,0 +1,87 @@
+/* ハンバーガーアイコン */
+.hamburger-icon {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 25px;
+  height: 20px;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+
+  
+}
+.title {
+    font-size: 25px;
+}
+
+/* ハンバーガーの線 */
+.hamburger-icon span {
+  width: 25px;
+  height: 2px;
+  background: #333;
+  transition: transform 0.3s, opacity 0.3s;
+  position: absolute;
+  justify-content: flex-start
+}
+
+/* 1本目（上の線） */
+.hamburger-icon span:nth-child(1) {
+  top: 0;
+
+}
+
+/* 2本目（中央の線） */
+.hamburger-icon span:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* 3本目（下の線） */
+.hamburger-icon span:nth-child(3) {
+  bottom: 0;
+}
+
+/* メニュー（スライドアニメーション） */
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px; /* メニューの幅 */
+  height: 100vh;
+  background: #fff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* メニューが開いたとき */
+.menu.active {
+  transform: translateX(0);
+}
+
+/* 閉じるボタン */
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+/* ハンバーガーメニューが開いたときのアイコンアニメーション */
+.hamburger-menu.active .hamburger-icon span:nth-child(1) {
+  transform: translateY(11px) rotate(45deg);
+}
+
+.hamburger-menu.active .hamburger-icon span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-menu.active .hamburger-icon span:nth-child(3) {
+  transform: translateY(-11px) rotate(-45deg);
+}
