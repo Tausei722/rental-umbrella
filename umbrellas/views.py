@@ -37,6 +37,10 @@ class SigninView(TemplateView):
         # 入力した情報をDBにセーブし成功ページへリダイレクト
         if form.is_valid():
             form.save()
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(request, username=username, password=password)
+            login(request, user)
             return redirect('successfull_signin')
 
         # 失敗したらページにエラーメッセージを表示
@@ -87,8 +91,9 @@ class RentalForm(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
     
-    def post(self, request):
-        pass
+    def post(self, request, **kwargs):
+        rental_umbrella = Umbrellas.object.get(self.kwargs['pk'])
+
     
 class RentalAnotherForm(LoginRequiredMixin, TemplateView):
     template_name = "pages/rental_another.html"

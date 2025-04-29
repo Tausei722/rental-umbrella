@@ -8,8 +8,8 @@ from django.contrib.auth.forms import AuthenticationForm
 class CustomForm(forms.ModelForm):
     username = forms.CharField(label='名前',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
     email = forms.EmailField(label='メール',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
-    password = forms.CharField(label='パスワード',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
-    password_confirm = forms.CharField(label='パスワード確認',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
+    password = forms.CharField(label='パスワード',widget=forms.PasswordInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
+    password_confirm = forms.CharField(label='パスワード確認',widget=forms.PasswordInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
     faculty = forms.ChoiceField(choices=STATUS_FACULTY, label='学部',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
     grade = forms.ChoiceField(choices=STATUS_GRADE, label='学年',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
     sex = forms.ChoiceField(choices=STATUS_SEX, label='性別',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
@@ -22,7 +22,7 @@ class CustomForm(forms.ModelForm):
     # パスワードのバリデーション機能(パスワードだけバリデーションを分ける)
     def clean_password(self):
         password = self.cleaned_data.get('password')
-        password_confirm = self.cleaned_data.get('password_confirm')
+        password_confirm = self.data.get("password_confirm")
 
         if password != password_confirm:
             raise forms.ValidationError('パスワードが確認と違います')
@@ -66,10 +66,11 @@ class CustomForm(forms.ModelForm):
             user.set_password(password)
 
         if commit:
+            
             user.save()
 
         return user
-    
+
 # ログインフォームのフォーム作成
 class LoginForm(AuthenticationForm):
     username = forms.CharField(label='名前',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
