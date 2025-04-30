@@ -147,5 +147,6 @@ EMAIL_HOST = "smtp.gmail.com"  # ✅ メールサーバー（例: Gmailなら 's
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "rental.umbrella@gmail.com"  # ✅ 送信元メールアドレス
-EMAIL_HOST_PASSWORD = "Rental825"  # ✅ パスワード（環境変数推奨）
+EMAIL_HOST_PASSWORD = "hykmvmhrkbejmbow"  # ✅ パスワード（環境変数推奨）
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+PASSWORD_RESET_TIMEOUT = 3600

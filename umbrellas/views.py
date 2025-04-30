@@ -32,8 +32,6 @@ class SigninView(TemplateView):
     template_name = "pages/form.html"
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect("home")
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
