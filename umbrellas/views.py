@@ -99,11 +99,14 @@ class RentalForm(LoginRequiredMixin, TemplateView):
         return context
     
     def get(self, request, *args, **kwargs):
+        try:
+            Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
+        except ObjectDoesNotExist:
+            return render(request, "pages/404.html")
+
         # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
         try:
             is_rentaled = Umbrellas.objects.get(borrower=request.user)
-            messages.error(request, "返却するには傘番号をフォームに入力してください")
-
         except ObjectDoesNotExist:
             return render(request, "pages/rental.html", {"is_rentaled": True, "pk": self.kwargs['pk']})
 
