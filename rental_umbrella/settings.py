@@ -140,3 +140,13 @@ LOGIN_URL = '/umbrellas/login/'
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# パスワード再設定のメール送信設定
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"  # ✅ メールサーバー（例: Gmailなら 'smtp.gmail.com'）
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "rental.umbrella@gmail.com"  # ✅ 送信元メールアドレス
+EMAIL_HOST_PASSWORD = "hykmvmhrkbejmbow"  # ✅ パスワード（環境変数推奨）
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+PASSWORD_RESET_TIMEOUT = 3600

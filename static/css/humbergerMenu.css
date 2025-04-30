@@ -85,6 +85,9 @@ header {
   font-size: 25px;
   cursor: pointer;
   align-self: flex-end;
+  padding-top: 16px;
+  padding-right: 16px;
+  font-size:larger;
 }
 
 /* ハンバーガーメニューが開いたときのアイコンアニメーション */
