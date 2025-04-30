@@ -11,4 +11,7 @@
   {% else %}
     <h2>現在借りている傘はありません</h2>
   {% endif %}
+  {% if logout %}
+    <h2>ログアウトが失敗しました</h2>
+{% endif %}
 {% endblock %}

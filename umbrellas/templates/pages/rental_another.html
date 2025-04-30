@@ -6,13 +6,23 @@
 <form method="post" action="/rental/">
   {% csrf_token %}
   <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
+    <div class="text-3xl">
+      {% if is_rentaled %}
+        <h1>レンタルフォーム</h1>
+      {% else %}
+        <h1>返却フォーム</h1>
+      {% endif %}
+    </div>
+
     <div class="p-12 mb-12">
       <label for="入力フォーム">傘番号入力フォーム</label>
       <input type="text" name="umbrella_number" class="border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-center text-3xl"/>
       {% if messages %}
         {% for message in messages %}
-          <p class="text-red-500">{{ message }}</p>  <!-- 🚀 エラーメッセージを表示 -->
+          <p class="text-red-500">{{ message }}</p>
         {% endfor %}
+      {% else %}
+        <p>返却するには傘番号をフォームに入力してください</p>
       {% endif %}
     </div>
     {% if is_rentaled %}

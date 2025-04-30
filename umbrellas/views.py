@@ -49,15 +49,10 @@ class SigninView(TemplateView):
             password = form.cleaned_data.get("password")
             user = authenticate(request, username=username, password=password)
             login(request, user)
-            return redirect('successfull_signin')
+            return render(request, "pages/successfull_signin.html")
 
         # 失敗したらページにエラーメッセージを表示
         return render(request, "pages/form.html", {'form': form})
-
-# サインイン完了画面
-class SigninSuccessfullView(TemplateView):
-    def get(self, request):
-        return render(request, "pages/successfull_signin.html")
 
 class CustomLoginView(LoginView):
     template_name = "pages/login.html"
@@ -84,8 +79,14 @@ class CustomLoginView(LoginView):
 # ログアウトの処理
 class LogoutView(TemplateView):
     def get(self, request):
-        logout(request)
-        return redirect("/login/")
+        return render(request, "pages/logout.html")
+    
+    def post(self, request):
+        print(request.POST.get('logout'), "as")
+        if request.POST.get('logout'):
+            logout(request)
+            return render(request, "pages/successfull_logout.html")
+        return render(request, "pages/home.html", {"logout": True})
 
 # QRで傘借りる
 class RentalForm(LoginRequiredMixin, TemplateView):
@@ -129,8 +130,10 @@ class RentalForm(LoginRequiredMixin, TemplateView):
 
         # 返すときの処理
         elif "return" in request.POST:
-            rental_umbrella = Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
-            print(rental_umbrella.borrower,"sfgrtr")
+            try:
+                rental_umbrella = Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
+            except ObjectDoesNotExist:
+                return render(request, "pages/rental.html", {"is_rentaled": True})
 
             # 借りている人と今返却フォームを操作している人が同じか見る
             if rental_umbrella.borrower == request.user:
@@ -148,8 +151,6 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
         # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
         try:
             is_rentaled = Umbrellas.objects.get(borrower=request.user)
-            messages.error(request, "返却するには傘番号をフォームに入力してください")
-
         except ObjectDoesNotExist:
             return render(request, "pages/rental_another.html", {"is_rentaled": True})
 
@@ -176,8 +177,11 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
 
         # 返すときの処理
         elif "return" in request.POST:
-            rental_umbrella = Umbrellas.objects.get(umbrella_name=umbrella_name)
-            print(rental_umbrella.borrower,"sfgrtr")
+            try:
+                rental_umbrella = Umbrellas.objects.get(umbrella_name=umbrella_name)
+            except ObjectDoesNotExist:
+                messages.error(request, "❌ 入力された番号と違います")
+                return redirect(request.path)
 
             # 借りている人と今返却フォームを操作している人が同じか見る
             if rental_umbrella.borrower == request.user:
