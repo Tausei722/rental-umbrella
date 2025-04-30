@@ -11,10 +11,10 @@
     {% endif %}
     <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
       <label class="w-fit h-full px-2" for="{{ form.name.id_for_label }}">名前</label>
-      {{ form.name }}
-      {% if form.name.errors %}
+      {{ form.username }}
+      {% if form.username.errors %}
       <div class="error">
-        {{ form.name.errors }}
+        {{ form.username.errors }}
       </div>
       {% endif %}
     </div>
@@ -37,6 +37,11 @@
         {{ form.password.errors }}
       </div>
       {% endif %}
+    </div>
+
+    <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
+      <label class="w-fit px-2" for="{{ form.password_confirm.id_for_label }}">パスワード確認</label>
+      {{ form.password_confirm }}
     </div>
 
     <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
@@ -69,7 +74,7 @@
       {% endif %}
     </div>
 
-    <button type="submit" class="btn-color mt-8 mb-16 px-8 py-8">送信</button>
+    <button type="submit" class="btn-color mt-8 mb-16 px-8 py-8 cursor-pointer">送信</button>
   </div>
 </form>
 
