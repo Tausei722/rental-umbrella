@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Umbrellas, RentalLog, UmbrellaLog
+from .models import CustomUser, Umbrellas, RentalLog, UmbrellaLog, LostComments
 from .forms import UmbrellaForm
 from umbrellas.management.commands.createUmbrella import Command
 
@@ -19,9 +19,9 @@ class CustomUserAdmin(admin.ModelAdmin):
     list_filter = ("faculty", "grade", "sex")
 
 class UmbrellaAdmin(admin.ModelAdmin):
-    list_display = ("umbrella_name", "borrower", "place", "last_lend", "create_at", "update_at", "create_buttons")
+    list_display = ("umbrella_name", "borrower", "place", "is_lost", "create_at", "update_at", "create_buttons")
     search_fields = ("borrower__icontains",)
-    list_filter = ("place", "last_lend")
+    list_filter = ("place", "is_lost")
     actions = ["create_umbrella_view"]
     form = UmbrellaForm
 
@@ -77,3 +77,4 @@ admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Umbrellas, UmbrellaAdmin)
 admin.site.register(RentalLog)
 admin.site.register(UmbrellaLog, UmbrellaLogAdmin)
+admin.site.register(LostComments)

@@ -128,6 +128,7 @@ class Umbrellas(models.Model):
     umbrella_name = models.CharField("傘整理番号",max_length=225)
     borrower = models.ForeignKey(CustomUser,verbose_name="貸出者",null=True,on_delete=models.SET_NULL,related_name='borrowed_user')
     place = models.CharField("場所",max_length=225,choices=STATUS_PRACE)
+    is_lost = models.BooleanField("紛失してるか",default=False)
     last_lend = models.DateField("最後に貸出(返却)した日", null=True)
     create_at = models.DateField("入荷日",auto_now_add=True, null=True)
     update_at = models.DateField("最後に貸出(返却)した日",auto_now=True, null=True)
@@ -183,3 +184,14 @@ class RentalLog(models.Model):
     class Meta:
         verbose_name = "履歴"
         verbose_name_plural = "レンタルログ画面"
+
+class LostComments(models.Model):
+    id = models.AutoField(primary_key=True)
+    reason = models.CharField("失くした理由",max_length=225)
+    where_lost = models.CharField("どこで失くした",max_length=225)
+    other = models.CharField('その他',max_length=225)
+    who_lost = models.ForeignKey(CustomUser,verbose_name="誰が失くしたか",on_delete=models.DO_NOTHING)
+
+    class Meta:
+        verbose_name = "紛失届け"
+        verbose_name_plural = "紛失届け"
