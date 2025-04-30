@@ -6,12 +6,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="{% static 'js/menu.js' %}" defer></script>
     <link rel="stylesheet" href="{% static 'css/humbergerMenu.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <title>Rental Umbrella</title>
 </head>
 <header class="bg-[#8cd4ff] p-4 content-shadow">
-  <h1>シェア傘</h1>
+  <h1 class="title mr-auto">シェア傘</h1>
+  <div class="hamburger-menu p-3">
+    <div class="hamburger-icon">
+      
+      <span></span>
+      <span></span>
+      <span></span>
+      
+    </div>
+    <nav class="menu">
+      <button class="close-btn">✖</button>
+      <a class="humg-menu p-1" href="#">・レンタルフォーム</a>
+      <a class="humg-menu p-1" href="#" >・借りられている傘</a>
+      <a class="humg-menu p-1" href="#">・ログアウト</a>
+    </nav>
+  </div> 
+  <script src="menu.js" defer></script>
+
 </header>
 
 <body class="">
@@ -19,5 +37,6 @@
     {% block content %}
     {% endblock %}
   </main>
+
 </body>
 </html>
