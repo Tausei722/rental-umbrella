@@ -22,7 +22,13 @@ header {
     font-size: 25px;
     text-indent: 0px
 }
+.humg-menu{
+    font-size: 20px;
+    padding: -5%;
+    padding-top: 10px;
+    padding-left: -20px;
 
+}
 /* ハンバーガーの線 */
 .hamburger-icon span {
   width: 25px;
@@ -63,7 +69,7 @@ header {
     transition: top 0.3s ease-in-out; /* スムーズなスライド効果 */
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 10px;
     z-index: 1000; /* 他の要素より前に表示 */
   }
   
@@ -76,7 +82,7 @@ header {
 .close-btn {
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 25px;
   cursor: pointer;
   align-self: flex-end;
 }
