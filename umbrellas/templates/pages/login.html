@@ -5,6 +5,7 @@
 {% block content %}
 <form method="post" action="/login/">
   {% csrf_token %}
+  <h1 class="text-3xl flex justify-center pt-4">ログイン</h1>
   <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
     {% if form.errors %}
       {{form.errors}}
@@ -29,7 +30,9 @@
       {% endif %}
     </div>
 
-    <button type="submit" class="btn-color mt-8 mb-16 px-8 py-8 cursor-pointer">送信</button>
+    <button type="submit" class="btn-color mt-8 mb-8 px-8 py-8 cursor-pointer">送信</button>
+    <a href="/form/" class="text-base">新しくアカウントを作る</a>
+    <a href="/form/" class="text-base">パスワードを忘れた</a>
   </div>
 </form>
 

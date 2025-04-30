@@ -32,6 +32,11 @@ class UmbrellaAdmin(admin.ModelAdmin):
             path('create_umbrella/', self.create_umbrella_view, name="create_umbrella"),
         ]
         return custom_urls + urls
+    
+    # 消せないから無理やり定義
+    def delete_model(self, request, obj):
+        obj.borrower = None
+        obj.delete()
 
     # 管理画面からフォームの入力値で `handle()` を実行
     def create_umbrella_view(self, request):
@@ -49,7 +54,6 @@ class UmbrellaAdmin(admin.ModelAdmin):
         else:
             form = UmbrellaCreationForm()
             return render(request, "admin/create_umbrella.html")
-            
 
         return render(request, "admin/create_umbrella.html", {"form": form})
     

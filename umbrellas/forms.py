@@ -120,5 +120,6 @@ class UmbrellaForm(forms.ModelForm):
     borrower = forms.ModelChoiceField(
         queryset=CustomUser.objects.all(),
         required=False,
-        label='貸出者'
+        label='貸出者',
+        empty_label="選択なし",
     )

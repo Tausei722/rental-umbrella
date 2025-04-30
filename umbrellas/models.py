@@ -72,7 +72,6 @@ class CustomUserManager(BaseUserManager):
         return self._create_user(username, email, password, **extra_fields)
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    id = models.AutoField(primary_key=True)
     username = models.CharField("名前",max_length=50,unique=True)
     email = models.EmailField("メールアドレス",max_length=225)
     password = models.CharField("パスワード",max_length=225)
@@ -124,9 +123,8 @@ class Umbrellas(models.Model):
         ('Senbaru domitory', '千原寮共用棟'),
     ]
 
-    id = models.AutoField(primary_key=True)
     umbrella_name = models.CharField("傘整理番号",max_length=225)
-    borrower = models.ForeignKey(CustomUser,verbose_name="貸出者",null=True,on_delete=models.SET_NULL,related_name='borrowed_user')
+    borrower = models.ForeignKey(CustomUser,verbose_name="貸出者",null=True,blank=True,on_delete=models.SET_NULL,related_name='borrowed_user')
     place = models.CharField("場所",max_length=225,choices=STATUS_PRACE)
     is_lost = models.BooleanField("紛失してるか",default=False)
     last_lend = models.DateField("最後に貸出(返却)した日", null=True)
@@ -141,7 +139,6 @@ class Umbrellas(models.Model):
         verbose_name_plural = "傘の情報"
 
 class UmbrellaLog(models.Model):
-    id = models.AutoField(primary_key=True)
     umbrella_log = models.JSONField("傘の入荷ログ", default=dict)
     create_at = models.DateField("入荷日",auto_now_add=True, null=True)
 
@@ -164,7 +161,6 @@ class Prace(models.Model):
         ('Senbaru domitory', '千原寮共用棟'),
     ]
 
-    id = models.AutoField(primary_key=True)
     prace_name = models.CharField(max_length=225,choices=STATUS_PRACE)
     return_umbrellas = models.ManyToManyField(Umbrellas,related_name='prace_return_umbrellas')
     create_at = models.DateField(auto_now_add=True, null=True)
@@ -175,7 +171,6 @@ class Prace(models.Model):
     
 # どの傘が誰にいつ借りられたか（返されたか）を記録するDB
 class RentalLog(models.Model):
-    id = models.AutoField(primary_key=True)
     create_at = models.DateField("ログ",auto_now=True, null=True)
     user = models.ForeignKey(CustomUser,verbose_name="ユーザー",null=False,on_delete=models.DO_NOTHING,related_name='active_user')
     umbrella = models.ForeignKey(Umbrellas,verbose_name="傘",null=False,on_delete=models.DO_NOTHING,related_name='rentaled_umbrella')
@@ -186,7 +181,6 @@ class RentalLog(models.Model):
         verbose_name_plural = "レンタルログ画面"
 
 class LostComments(models.Model):
-    id = models.AutoField(primary_key=True)
     reason = models.CharField("失くした理由",max_length=225)
     where_lost = models.CharField("どこで失くした",max_length=225)
     other = models.CharField('その他',max_length=225)
