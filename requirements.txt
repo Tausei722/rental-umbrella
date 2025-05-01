@@ -6,7 +6,6 @@ sqlparse==0.4.2
 stripe==3.5.0
 
 # heroku用
-python-3.12.3
 gunicorn
 psycopg2-binary
 python-dotenv
