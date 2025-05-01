@@ -80,7 +80,6 @@ class LogoutView(TemplateView):
         return render(request, "pages/logout.html")
     
     def post(self, request):
-        print(request.POST.get('logout'), "as")
         if request.POST.get('logout'):
             logout(request)
             return render(request, "pages/successfull_logout.html")
@@ -173,7 +172,6 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
                 return redirect(request.path) 
             else:
                 url = "rental/" + str(umbrella_name)
-                print(url)
                 return redirect(url)
 
         # 返すときの処理
