@@ -4,4 +4,9 @@ asgiref==3.4.1
 pytz==2021.1
 sqlparse==0.4.2
 stripe==3.5.0
+
+# heroku用
+gunicorn
+psycopg2-binary
 python-dotenv
+dj-database-url
