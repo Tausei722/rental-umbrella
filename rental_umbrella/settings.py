@@ -154,3 +154,5 @@ EMAIL_HOST_USER = "rental.umbrella@gmail.com"  # ✅ 送信元メールアドレ
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")  # ✅ パスワード（環境変数推奨）
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 PASSWORD_RESET_TIMEOUT = 3600
+
+ALLOWED_HOSTS = ["*"]
