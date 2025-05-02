@@ -19,15 +19,25 @@ class CustomPasswordResetView(PasswordResetView):
         response = super().form_valid(form)
 
         # SMTP 設定
-        server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-        server.ehlo()  # SMTP サーバーに接続
-        server.starttls()  # ✅ TLS を有効化（ここに追加！）
-        server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+        try:
+            server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+            server.ehlo()  # SMTP サーバーに接続
+            server.starttls()  # ✅ TLS を有効化（ここに追加！）
+            server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
-        # メール送信
-        message = "以下のリンクをクリックしてパスワードをリセットしてください。"
-        server.sendmail(settings.EMAIL_HOST_USER, [form.cleaned_data["email"]], message)
-        server.quit()
+            # メール送信
+            message = f"""
+                こんにちは {form.cleaned_data["email"]} さん、
+                以下のリンクからパスワードをリセットできます。
+
+                リセットリンク: {self.request.build_absolute_uri("/reset/done/")}
+
+                もしリクエストした覚えがない場合は、このメールを無視してください。
+                """
+            
+            server.sendmail(settings.EMAIL_HOST_USER, [form.cleaned_data["email"]], message)
+        finally:
+            server.quit()
 
         return response
 
