@@ -10,17 +10,21 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 
-# from django.core.mail import send_mail
-# from django.conf import settings
+from django.conf import settings
+from django.contrib.auth.views import PasswordResetView
+from django.core.mail import send_mail
 
-# send_mail(
-#     "Subject here",
-#     "Here is the message.",
-#     settings.EMAIL_HOST_USER, 
-#     ["rental.umbrella@gmail.com"],
-#     fail_silently=False,
-# )
-
+class CustomPasswordResetView(PasswordResetView):
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        send_mail(
+            "パスワードリセットのお知らせ",
+            "以下のリンクをクリックしてパスワードをリセットしてください。",
+            settings.EMAIL_HOST_USER,
+            [form.cleaned_data["email"]],
+            fail_silently=False,
+        )
+        return response
 
 # ホームページのビュー
 class HomeView(LoginRequiredMixin, TemplateView):
