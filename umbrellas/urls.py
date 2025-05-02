@@ -1,6 +1,6 @@
 # umbrellas/urls.py
 from django.urls import path
-from .views import HomeView, SigninView, CustomLoginView, LogoutView, RentalForm, RentalAnotherForm, LostUmbrella, CustomPasswordResetView
+from .views import HomeView, SigninView, CustomLoginView, LogoutView, RentalForm, RentalAnotherForm, LostUmbrella
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
