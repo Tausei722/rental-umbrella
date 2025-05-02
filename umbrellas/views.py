@@ -9,6 +9,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.views import PasswordResetView
+import smtplib
+from django.conf import settings
+import os
+from dotenv import load_dotenv
 
 # ホームページのビュー
 class HomeView(LoginRequiredMixin, TemplateView):
@@ -227,3 +232,18 @@ class LostUmbrella(LoginRequiredMixin, TemplateView):
         except ObjectDoesNotExist:
                 messages.error(request, "❌ その傘は別の人に借りられています")
                 return redirect(request.path)
+        
+# パスワード忘れのフォーム
+class CustomPasswordResetView(PasswordResetView):
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        try:
+            server = smtplib.SMTP("smtp.gmail.com", 587)
+            server.ehlo()
+            server.starttls()  # ✅ keyfile, certfile を渡さない
+            server.login(os.getenv("EMAIL_HOST_USER"), os.getenv("EMAIL_HOST_PASSWORD"))
+            server.sendmail(os.getenv("EMAIL_HOST_PASSWORD"), [form.cleaned_data["email"]], "パスワードリセットのお知らせ")
+        finally:
+            server.quit()
+
+        return response
