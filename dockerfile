@@ -10,7 +10,7 @@ COPY requirements.txt .
 # ライブラリをインストール
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir django-pdb
-RUN chmod -R 777 /usr/local/lib/python3.11/site-packages
+# RUN chmod -R 777 /usr/local/lib/python3.11/site-packages
 
 # アプリケーションコードをコンテナにコピー
 COPY . .
