@@ -10,38 +10,6 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 
-from django.conf import settings
-from django.contrib.auth.views import PasswordResetView
-import smtplib
-
-class CustomPasswordResetView(PasswordResetView):
-    def form_valid(self, form):
-        response = super().form_valid(form)
-
-        # SMTP 設定
-        try:
-            server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-            server.ehlo()  # SMTP サーバーに接続
-            server.starttls()  # ✅ TLS を有効化（ここに追加！）
-            server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-
-            # メール送信
-            message = f"""
-                こんにちは {form.cleaned_data["email"]} さん、
-                以下のリンクからパスワードをリセットできます。
-
-                リセットリンク: {self.request.build_absolute_uri("/reset/done/")}
-
-                もしリクエストした覚えがない場合は、このメールを無視してください。
-                """
-
-            server.sendmail(settings.EMAIL_HOST_USER, [form.cleaned_data["email"]], message)
-        finally:
-            server.quit()
-
-        return response
-
-
 # ホームページのビュー
 class HomeView(LoginRequiredMixin, TemplateView):
     template_name = "pages/home.html"
