@@ -10,6 +10,18 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 
+# from django.core.mail import send_mail
+# from django.conf import settings
+
+# send_mail(
+#     "Subject here",
+#     "Here is the message.",
+#     settings.EMAIL_HOST_USER, 
+#     ["rental.umbrella@gmail.com"],
+#     fail_silently=False,
+# )
+
+
 # ホームページのビュー
 class HomeView(LoginRequiredMixin, TemplateView):
     template_name = "pages/home.html"
