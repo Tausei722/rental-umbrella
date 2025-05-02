@@ -12,19 +12,25 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from django.conf import settings
 from django.contrib.auth.views import PasswordResetView
-from django.core.mail import send_mail
+import smtplib
 
 class CustomPasswordResetView(PasswordResetView):
     def form_valid(self, form):
         response = super().form_valid(form)
-        send_mail(
-            "パスワードリセットのお知らせ",
-            "以下のリンクをクリックしてパスワードをリセットしてください。",
-            settings.EMAIL_HOST_USER,
-            [form.cleaned_data["email"]],
-            fail_silently=False,
-        )
+
+        # SMTP 設定
+        server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+        server.ehlo()  # SMTP サーバーに接続
+        server.starttls()  # ✅ TLS を有効化（ここに追加！）
+        server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+        # メール送信
+        message = "以下のリンクをクリックしてパスワードをリセットしてください。"
+        server.sendmail(settings.EMAIL_HOST_USER, [form.cleaned_data["email"]], message)
+        server.quit()
+
         return response
+
 
 # ホームページのビュー
 class HomeView(LoginRequiredMixin, TemplateView):
