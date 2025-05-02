@@ -34,7 +34,7 @@ class CustomPasswordResetView(PasswordResetView):
 
                 もしリクエストした覚えがない場合は、このメールを無視してください。
                 """
-            
+
             server.sendmail(settings.EMAIL_HOST_USER, [form.cleaned_data["email"]], message)
         finally:
             server.quit()
