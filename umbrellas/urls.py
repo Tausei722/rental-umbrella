@@ -1,6 +1,6 @@
 # umbrellas/urls.py
 from django.urls import path
-from .views import HomeView, SigninView, CustomLoginView, LogoutView, RentalForm, RentalAnotherForm, LostUmbrella
+from .views import HomeView, SigninView, CustomLoginView, LogoutView, RentalForm, RentalAnotherForm, LostUmbrella, CustomPasswordResetView
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -14,7 +14,7 @@ urlpatterns = [
     path('lost_umbrella/', LostUmbrella.as_view(), name="lost_umbrella"),
 
     # パスワード再設定フォーム
-    path("password_reset/", auth_views.PasswordResetView.as_view(), name="password_reset"),  # ✅ リセットフォーム
+    path("password_reset/", CustomPasswordResetView.as_view(), name="password_reset"),  # ✅ リセットフォーム
     path("password_reset/done/", auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),  # ✅ 送信完了画面
     path("reset/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),  # ✅ 新しいパスワード入力
     path("reset/done/", auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),  # ✅ 完了画面

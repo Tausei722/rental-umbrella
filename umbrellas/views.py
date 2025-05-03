@@ -233,17 +233,18 @@ class LostUmbrella(LoginRequiredMixin, TemplateView):
                 messages.error(request, "❌ その傘は別の人に借りられています")
                 return redirect(request.path)
         
+from django.core.mail import send_mail
+from django.contrib.auth.views import PasswordResetView
+from django.conf import settings
 # パスワード忘れのフォーム
 class CustomPasswordResetView(PasswordResetView):
     def form_valid(self, form):
-        response = super().form_valid(form)
-        try:
-            server = smtplib.SMTP("smtp.gmail.com", 587)
-            server.ehlo()
-            server.starttls()  # ✅ keyfile, certfile を渡さない
-            server.login(os.getenv("EMAIL_HOST_USER"), os.getenv("EMAIL_HOST_PASSWORD"))
-            server.sendmail(os.getenv("EMAIL_HOST_PASSWORD"), [form.cleaned_data["email"]], "パスワードリセットのお知らせ")
-        finally:
-            server.quit()
-
-        return response
+        send_mail(
+            "パスワードリセットのお知らせ",
+            "以下のリンクをクリックしてパスワードをリセットしてください。",
+            settings.EMAIL_HOST_USER,
+            [form.cleaned_data["email"]],
+            fail_silently=False,
+        )
+        print(settings.EMAIL_HOST_USER,"メール")
+        return super().form_valid(form)
