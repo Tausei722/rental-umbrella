@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Umbrellas, RentalLog, UmbrellaLog
+from .models import CustomUser, Umbrellas, RentalLog, UmbrellaLog, LostComments
 from .forms import UmbrellaForm
 from umbrellas.management.commands.createUmbrella import Command
 
@@ -19,9 +19,9 @@ class CustomUserAdmin(admin.ModelAdmin):
     list_filter = ("faculty", "grade", "sex")
 
 class UmbrellaAdmin(admin.ModelAdmin):
-    list_display = ("umbrella_name", "borrower", "place", "last_lend", "create_at", "update_at", "create_buttons")
+    list_display = ("umbrella_name", "borrower", "place", "is_lost", "create_at", "update_at", "create_buttons")
     search_fields = ("borrower__icontains",)
-    list_filter = ("place", "last_lend")
+    list_filter = ("place", "is_lost")
     actions = ["create_umbrella_view"]
     form = UmbrellaForm
 
@@ -32,6 +32,11 @@ class UmbrellaAdmin(admin.ModelAdmin):
             path('create_umbrella/', self.create_umbrella_view, name="create_umbrella"),
         ]
         return custom_urls + urls
+    
+    # 消せないから無理やり定義
+    def delete_model(self, request, obj):
+        obj.borrower = None
+        obj.delete()
 
     # 管理画面からフォームの入力値で `handle()` を実行
     def create_umbrella_view(self, request):
@@ -49,7 +54,6 @@ class UmbrellaAdmin(admin.ModelAdmin):
         else:
             form = UmbrellaCreationForm()
             return render(request, "admin/create_umbrella.html")
-            
 
         return render(request, "admin/create_umbrella.html", {"form": form})
     
@@ -77,3 +81,4 @@ admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Umbrellas, UmbrellaAdmin)
 admin.site.register(RentalLog)
 admin.site.register(UmbrellaLog, UmbrellaLogAdmin)
+admin.site.register(LostComments)

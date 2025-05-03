@@ -115,10 +115,11 @@ class UmbrellaCreationForm(forms.Form):
 class UmbrellaForm(forms.ModelForm):
     class Meta:
         model = Umbrellas
-        fields = ["umbrella_name", "borrower", "place", "last_lend"]
+        fields = ["umbrella_name", "borrower", "place", "is_lost"]
 
     borrower = forms.ModelChoiceField(
         queryset=CustomUser.objects.all(),
         required=False,
-        label='貸出者'
+        label='貸出者',
+        empty_label="選択なし",
     )

@@ -2,13 +2,18 @@
 
 from django.views.generic import TemplateView
 from .forms import CustomForm, LoginForm
-from .models import Umbrellas, CustomUser
+from .models import Umbrellas, CustomUser, LostComments
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.views import PasswordResetView
+import smtplib
+from django.conf import settings
+import os
+from dotenv import load_dotenv
 
 # ホームページのビュー
 class HomeView(LoginRequiredMixin, TemplateView):
@@ -32,8 +37,6 @@ class SigninView(TemplateView):
     template_name = "pages/form.html"
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect("home")
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
@@ -82,7 +85,6 @@ class LogoutView(TemplateView):
         return render(request, "pages/logout.html")
     
     def post(self, request):
-        print(request.POST.get('logout'), "as")
         if request.POST.get('logout'):
             logout(request)
             return render(request, "pages/successfull_logout.html")
@@ -175,7 +177,6 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
                 return redirect(request.path) 
             else:
                 url = "rental/" + str(umbrella_name)
-                print(url)
                 return redirect(url)
 
         # 返すときの処理
@@ -195,3 +196,55 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
                 messages.error(request, "❌ その傘は別の人に借りられています")
                 return redirect(request.path)
 
+# 紛失した傘の送信フォーム
+class LostUmbrella(LoginRequiredMixin, TemplateView):
+    template_name = "pages/lost_umbrella.html"
+
+    def get(self, request):
+        # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
+        try:
+            is_rentaled = Umbrellas.objects.get(borrower=request.user)
+        except ObjectDoesNotExist:
+            return render(request, "pages/lost_umbrella.html", {"is_rentaled": False})
+
+        return render(request, "pages/lost_umbrella.html", {"is_rentaled": True})
+    
+    def post(self, request):
+        lost_reason = request.POST.get('lost-reason')
+        where_lost = request.POST.get('where-lost')
+        lost_other = request.POST.get('lost-other')
+
+        try:
+            if lost_reason and where_lost:
+                LostComments.objects.create(
+                    reason = lost_reason,
+                    where_lost = where_lost,
+                    other = lost_other,
+                    who_lost = request.user
+                )
+
+            lost_umbrella = Umbrellas.objects.get(borrower=request.user)
+            lost_umbrella.borrower = None
+            lost_umbrella.is_lost = True
+            lost_umbrella.save()
+
+            return render(request, "pages/successfull_lost_form.html")
+        except ObjectDoesNotExist:
+                messages.error(request, "❌ その傘は別の人に借りられています")
+                return redirect(request.path)
+        
+from django.core.mail import send_mail
+from django.contrib.auth.views import PasswordResetView
+from django.conf import settings
+# パスワード忘れのフォーム
+class CustomPasswordResetView(PasswordResetView):
+    def form_valid(self, form):
+        send_mail(
+            "パスワードリセットのお知らせ",
+            "以下のリンクをクリックしてパスワードをリセットしてください。",
+            settings.EMAIL_HOST_USER,
+            [form.cleaned_data["email"]],
+            fail_silently=False,
+        )
+        print(settings.EMAIL_HOST_USER,"メール")
+        return super().form_valid(form)

@@ -5,7 +5,12 @@
 {% block content %}
 <form method="post" action="/login/">
   {% csrf_token %}
+<<<<<<< HEAD
   <div class="w-full text-center flex flex-col justify-center items-center mt-10 gap-12">
+=======
+  <h1 class="text-3xl flex justify-center pt-4">ログイン</h1>
+  <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
+>>>>>>> cb9e457a0e7836dca6ce8f74631c06bc0c133a60
     {% if form.errors %}
       {{form.errors}}
     {% endif %}
@@ -29,7 +34,9 @@
       {% endif %}
     </div>
 
-    <button type="submit" class="btn-color mt-8 mb-16 px-8 py-8 cursor-pointer">送信</button>
+    <button type="submit" class="btn-color mt-8 mb-8 px-8 py-8 cursor-pointer">送信</button>
+    <a href="/form/" class="text-base">新しくアカウントを作る</a>
+    <a href="/password_reset/" class="text-base">パスワードを忘れた</a>
   </div>
 </form>
 
