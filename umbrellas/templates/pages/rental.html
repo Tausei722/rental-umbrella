@@ -23,11 +23,11 @@
     {% if is_rentaled %}
       <button type="submit" name="lend" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">レンタルしますか？</button>
       <!-- ホームに戻す -->
-      <button class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">キャンセル</button>
+      <a href="/"><button class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">キャンセル</button></a>
     {% else %}
       <button type="submit" name="return" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">返却</button>
       <!-- ホームに戻す -->
-      <button type="submit" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8">キャンセル</button>
+      <a href="/"><button class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">キャンセル</button></a>
     {% endif %}
   </div>
 </form>
