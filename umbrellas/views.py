@@ -119,7 +119,8 @@ class RentalForm(LoginRequiredMixin, TemplateView):
 
         # 借りるときの処理
         if "cancel" in request.POST:
-            redirect('home')
+            return render(request, "pages/home.html")
+
         if "lend" in request.POST:
             try:
                 rental_umbrella = Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
@@ -168,7 +169,7 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
 
         # 借りるときの処理
         if "cancel" in request.POST:
-            redirect('home')
+            return render(request, "pages/home.html")
 
         if "lend" in request.POST:
             try:
