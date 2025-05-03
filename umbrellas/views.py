@@ -118,6 +118,8 @@ class RentalForm(LoginRequiredMixin, TemplateView):
         context = self.get_context_data()
 
         # 借りるときの処理
+        if "cancel" in request.POST:
+            redirect('home')
         if "lend" in request.POST:
             try:
                 rental_umbrella = Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
@@ -165,6 +167,9 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
         umbrella_name = request.POST.get('umbrella_number')
 
         # 借りるときの処理
+        if "cancel" in request.POST:
+            redirect('home')
+
         if "lend" in request.POST:
             try:
                 umbrella = Umbrellas.objects.get(umbrella_name=umbrella_name)
