@@ -11,7 +11,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name="logout"),
     path('rental/', RentalAnotherForm.as_view(), name="rental_another"),
     path('rental/rental/<str:pk>', RentalForm.as_view(), name="rental"),
-    path('umbrella/login/?next=/rental/rental/<str:pk>', RentalForm.as_view(), name="rental"),
+    path('umbrellas/login/?next=/rental/rental/<str:pk>', RentalForm.as_view(), name="rental"),
     path('lost_umbrella/', LostUmbrella.as_view(), name="lost_umbrella"),
 
     # パスワード再設定フォーム
