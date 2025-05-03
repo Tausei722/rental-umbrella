@@ -1,13 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
-    <div>
-        <h1></h1>
+{% extends "base.html" %}
+
+{% block title %}ログイン{% endblock %}
+
+{% block content %}
+<form method="post" action="/login/">
+  {% csrf_token %}
+<<<<<<< HEAD
+  <div class="w-full text-center flex flex-col justify-center items-center mt-10 gap-12">
+=======
+  <h1 class="text-3xl flex justify-center pt-4">ログイン</h1>
+  <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
+>>>>>>> cb9e457a0e7836dca6ce8f74631c06bc0c133a60
+    {% if form.errors %}
+      {{form.errors}}
+    {% endif %}
+    <div class="w-10/11 h-full grid grid-cols-[1fr_3fr] px-3 py-9 rounded-md content-shadow content-color sm:w-3/5 sm:px-10" >
+      <label class="w-hull h-full flex items-center grid place-items-center text-[20px] " for="{{ form.name.id_for_label }}">名前</label>
+      {{ form.username }}
+      {% if form.username.errors %}
+      <div class="error">
+        {{ form.username.errors }}
+      </div>
+      {% endif %}
     </div>
-</body>
-</html>
+
+    <div class="w-10/11 h-full grid grid-cols-[4fr_9fr] px-3 py-8 rounded-md content-shadow content-color sm:w-3/5 sm:px-10 sm:grid-cols-[1fr_3fr]">
+      <label class="w-full flex items-center grid place-items-center text-[20px]" for="{{ form.password.id_for_label }}">パスワード</label>
+      {{ form.password }}
+      {% if form.password.errors %}
+      <div class="error">
+        {{ form.password.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn-color mt-8 mb-8 px-8 py-8 cursor-pointer">送信</button>
+    <a href="/form/" class="text-base">新しくアカウントを作る</a>
+    <a href="/password_reset/" class="text-base">パスワードを忘れた</a>
+  </div>
+</form>
+
+{% endblock %}

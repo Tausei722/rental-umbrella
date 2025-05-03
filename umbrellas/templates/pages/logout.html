@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}レンタル完了{% endblock %}
+
+{% block content %}
+
+<main class="flex flex-col justify-center p-8">
+  <div class="content-color content-shadow flex justify-center rounded-md py-30 px-2 text-3xl">
+    <h1>ログアウトしますか？</h1>
+  </div>
+
+  <form method="post" action="/logout/">
+    {% csrf_token %}
+    <button type="submit" name="logout" value="clicked" class="btn-color w-full mt-16 px-8 py-8 text-3xl cursor-pointer">ログアウト</button>
+  </form>
+</main>
+
+{% endblock %}
