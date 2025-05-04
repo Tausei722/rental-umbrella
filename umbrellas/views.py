@@ -9,8 +9,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.views import PasswordResetView
 import smtplib
+from email.mime.text import MIMEText
+
 from django.conf import settings
 import os
 from dotenv import load_dotenv
@@ -239,21 +240,58 @@ class LostUmbrella(LoginRequiredMixin, TemplateView):
                 messages.error(request, "❌ その傘は別の人に借りられています")
                 return redirect(request.path)
         
-from django.core.mail import send_mail
-from django.contrib.auth.views import PasswordResetView
-from django.conf import settings
+
 # パスワード忘れのフォーム
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.conf import settings
 class CustomPasswordResetView(TemplateView):
     template_name = "registration/password_reset_form.html"
 
     def post(self, request):
         form = request.POST.get('email')
         print(form)
-        send_mail(
-            "パスワードリセットのお知らせ",
-            "以下のリンクをクリックしてパスワードをリセットしてください。",
-            "rental.umbrella@gmail.com",
-            [form],
-            fail_silently=False,
+        # トークンの作成
+        uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
+        token = default_token_generator.make_token(request.user)
+
+        # サーバー接続
+        smtp_server = "smtp.gmail.com"
+        smtp_port = 587
+        smtp_user = settings.EMAIL_HOST_USER
+        smtp_password = settings.EMAIL_HOST_PASSWORD
+
+        # メール本文の作成
+        email_body = """\
+            こんにちは、{username} さん
+
+            パスワードをリセットするには、以下のリンクをクリックしてください:
+
+            <a href="{protocol}://{domain}{reset_url}">
+                パスワードリセット
+            </a>
+
+            このリンクの有効期限は1時間です。
+            """
+        
+        email_body = email_body.format(
+            username=request.user.username,
+            protocol="https",
+            domain="share-kasa-f551340d651d.herokuapp.com",
+            reset_url="/password_reset_confirm/{uidb64}/{token}"
         )
+
+        # 送信
+        msg = MIMEText(email_body, "html")
+        msg["Subject"] = "パスワードリセット"
+        msg["From"] = smtp_user
+        msg["To"] = form
+
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(smtp_user, smtp_password)
+        server.sendmail(smtp_user, [form], msg.as_string())
+        server.quit()
+
         return render(request, "registration/password_reset_form.html", {"submit": "メールが送信されました"})
