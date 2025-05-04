@@ -277,7 +277,7 @@ class CustomPasswordResetView(TemplateView):
         
         email_body = email_body.format(
             username=request.user.username,
-            uri=f"https://share-kasa-f551340d651d.herokuapp.com/password_reset_confirm/{uidb64}/{token}",
+            uri=f"https://share-kasa-f551340d651d.herokuapp.com/reset/{uidb64}/{token}",
         )
 
         # 送信
