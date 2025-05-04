@@ -270,9 +270,7 @@ class CustomPasswordResetView(TemplateView):
 
             パスワードをリセットするには、以下のリンクをクリックしてください:
 
-            <a href="{protocol}://{domain}{reset_url}">
-                パスワードリセット
-            </a>
+            {protocol}://{domain}{reset_url}
 
             このリンクの有効期限は1時間です。
             """
