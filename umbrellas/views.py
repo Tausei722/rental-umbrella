@@ -243,14 +243,17 @@ from django.core.mail import send_mail
 from django.contrib.auth.views import PasswordResetView
 from django.conf import settings
 # パスワード忘れのフォーム
-class CustomPasswordResetView(PasswordResetView):
-    def form_valid(self, form):
+class CustomPasswordResetView(TemplateView):
+    template_name = "registration/password_reset_form.html"
+
+    def post(self, request):
+        form = request.POST.get('email')
+        print(form)
         send_mail(
             "パスワードリセットのお知らせ",
             "以下のリンクをクリックしてパスワードをリセットしてください。",
-            settings.EMAIL_HOST_USER,
-            [form.cleaned_data["email"]],
+            "rental.umbrella@gmail.com",
+            [form],
             fail_silently=False,
         )
-        print(settings.EMAIL_HOST_USER,"メール")
-        return super().form_valid(form)
+        return render(request, "registration/password_reset_form.html", {"submit": "メールが送信されました"})
