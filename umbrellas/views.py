@@ -2,7 +2,7 @@
 
 from django.views.generic import TemplateView
 from .forms import CustomForm, LoginForm
-from .models import Umbrellas, CustomUser, LostComments
+from .models import Umbrellas, CustomUser, LostComments, RentalLog
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -138,6 +138,12 @@ class RentalForm(LoginRequiredMixin, TemplateView):
                 else:
                     rental_umbrella.borrower = CustomUser.objects.get(username=context["user"])
                     rental_umbrella.save()
+
+                    rental_log = RentalLog.objects.create(
+                        user=request.user,
+                        umbrella=rental_umbrella,
+                        is_rental=True
+                    )
                     return render(request, "pages/successfull_rental.html")
             except ValueError as e:
                 return redirect(request.path)
@@ -152,6 +158,13 @@ class RentalForm(LoginRequiredMixin, TemplateView):
             # 借りている人と今返却フォームを操作している人が同じか見る
             if rental_umbrella.borrower == request.user:
                 rental_umbrella.borrower = None
+                rental_umbrella.save()
+
+                rental_log = RentalLog.objects.create(
+                    user=request.user,
+                    umbrella=rental_umbrella,
+                    is_rental=False
+                )
                 return render(request, "pages/successfull_return.html")
             else:
                 messages.error(request, "❌ その傘は別の人に借りられています")
@@ -160,6 +173,12 @@ class RentalForm(LoginRequiredMixin, TemplateView):
 # 数字入力で傘借りる
 class RentalAnotherForm(LoginRequiredMixin, TemplateView):
     template_name = "pages/rental_another.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["pk"] = self.kwargs.get("pk")
+        context["user"] = self.request.user
+        return context
 
     def get(self, request):
         # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
@@ -179,17 +198,24 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
 
         if "lend" in request.POST:
             try:
-                umbrella = Umbrellas.objects.get(umbrella_name=umbrella_name)
+                rental_umbrella = Umbrellas.objects.get(umbrella_name=umbrella_name)
+                # すでにborrowerがいた場合はエラーを変えす
+                if rental_umbrella.borrower is not None:
+                    messages.error(request, "❌ その傘はすでに借りられているか、返却されていません")
+                    return redirect(request.path) 
+                else:
+                    rental_umbrella.borrower = CustomUser.objects.get(username=self.context["user"])
+                    rental_umbrella.save()
+
+                    rental_log = RentalLog.objects.create(
+                        user=request.user,
+                        umbrella=rental_umbrella,
+                        is_rental=True
+                    )
+                    return render(request, "pages/successfull_rental.html")
             except ObjectDoesNotExist:
                 messages.error(request, "❌ 傘が見つかりませんでした！")
                 return redirect(request.path)
-            
-            if umbrella.borrower is not None:
-                messages.error(request, "❌ その傘はすでに借りられているか、返却されていません")
-                return redirect(request.path) 
-            else:
-                url = "rental/" + str(umbrella_name)
-                return redirect(url)
 
         # 返すときの処理
         elif "return" in request.POST:
@@ -203,6 +229,12 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
             if rental_umbrella.borrower == request.user:
                 rental_umbrella.borrower = None
                 rental_umbrella.save()
+
+                rental_log = RentalLog.objects.create(
+                    user=request.user,
+                    umbrella=rental_umbrella,
+                    is_rental=False
+                )
                 return render(request, "pages/successfull_return.html")
             else:
                 messages.error(request, "❌ その傘は別の人に借りられています")
