@@ -245,6 +245,7 @@ class LostUmbrella(LoginRequiredMixin, TemplateView):
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
+from .models import CustomUser
 from django.conf import settings
 class CustomPasswordResetView(TemplateView):
     template_name = "registration/password_reset_form.html"
@@ -253,8 +254,9 @@ class CustomPasswordResetView(TemplateView):
         form = request.POST.get('email')
         print(form)
         # トークンの作成
-        uidb64 = urlsafe_base64_encode(force_bytes(request.user.id))
-        token = default_token_generator.make_token(request.user)
+        user = CustomUser.objects.get(email=form)
+        uidb64 = urlsafe_base64_encode(force_bytes(user.id))
+        token = default_token_generator.make_token(user)
 
         # サーバー接続
         smtp_server = "smtp.gmail.com"
@@ -288,10 +290,13 @@ class CustomPasswordResetView(TemplateView):
         msg["From"] = smtp_user
         msg["To"] = form
 
-        server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()
-        server.login(smtp_user, smtp_password)
-        server.sendmail(smtp_user, [form], msg.as_string())
-        server.quit()
+        try:
+            server = smtplib.SMTP(smtp_server, smtp_port)
+            server.starttls()
+            server.login(smtp_user, smtp_password)
+            server.sendmail(smtp_user, [form], msg.as_string())
+            server.quit()
+        except smtplib.SMTPException as e:
+            return render(request, "registration/password_reset_form.html", {"submit": "SMTP エラーが発生しました: {e}"})
 
         return render(request, "registration/password_reset_form.html", {"submit": "メールが送信されました"})
