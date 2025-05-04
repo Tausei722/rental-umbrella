@@ -280,8 +280,8 @@ class CustomPasswordResetView(TemplateView):
             protocol="https",
             domain="share-kasa-f551340d651d.herokuapp.com",
             reset_url="/password_reset_confirm"
-            uidb64 = "/{uidb64}"
-            token = "/{token}"
+            uidb64 = f"/{uidb64}"
+            token = f"/{token}"
         )
 
         # 送信
