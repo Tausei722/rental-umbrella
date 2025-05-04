@@ -67,8 +67,9 @@ class CustomLoginView(LoginView):
     authentication_form = LoginForm
 
     def get_success_url(self):
-        next_url = self.request.GET.get("next")
-        return next_url if next_url else "/" 
+        print(self.request.POST,"#R23r4t3y5hyjmj")
+        next_url = self.request.GET.get("next") or self.request.POST.get("next")
+        return next_url if next_url else "/"
 
     def post(self, request):
         form = LoginForm(data=request.POST)
