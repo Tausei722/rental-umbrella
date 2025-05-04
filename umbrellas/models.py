@@ -73,7 +73,7 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField("名前",max_length=50,unique=True)
-    email = models.EmailField("メールアドレス",max_length=225)
+    email = models.EmailField("メールアドレス",max_length=225,unique=True)
     password = models.CharField("パスワード",max_length=225)
     faculty = models.CharField("学部",max_length=225,choices=STATUS_FACULTY)
     grade = models.CharField("学年",max_length=225,choices=STATUS_GRADE)
