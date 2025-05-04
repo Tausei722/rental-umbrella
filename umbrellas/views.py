@@ -255,7 +255,7 @@ class CustomPasswordResetView(TemplateView):
         print(form)
         # トークンの作成
         user = CustomUser.objects.get(email=form)
-        uidb64 = urlsafe_base64_encode(force_bytes(user.id))
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)
 
         # サーバー接続
