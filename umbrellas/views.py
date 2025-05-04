@@ -67,7 +67,6 @@ class CustomLoginView(LoginView):
     authentication_form = LoginForm
 
     def get_success_url(self):
-        print(self.request.POST,"#R23r4t3y5hyjmj")
         next_url = self.request.GET.get("next") or self.request.POST.get("next")
         return next_url if next_url else "/"
 
@@ -298,7 +297,6 @@ class CustomPasswordResetView(TemplateView):
 
     def post(self, request):
         form = request.POST.get('email')
-        print(form)
         # トークンの作成
         user = CustomUser.objects.get(email=form)
         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
