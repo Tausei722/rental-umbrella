@@ -1,7 +1,7 @@
 # umbrellas/views.py
 
 from django.views.generic import TemplateView
-from .forms import CustomForm, LoginForm
+from .forms import CustomForm, LoginForm, ReturnForm
 from .models import Umbrellas, CustomUser, LostComments, RentalLog
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
@@ -107,21 +107,23 @@ class RentalForm(LoginRequiredMixin, TemplateView):
         return context
     
     def get(self, request, *args, **kwargs):
+        form = ReturnForm()
         try:
             Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
         except ObjectDoesNotExist:
-            return render(request, "pages/404.html")
+            return render(request, "pages/404.html", {'form': form})
 
         # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
         try:
             is_rentaled = Umbrellas.objects.get(borrower=request.user)
         except ObjectDoesNotExist:
-            return render(request, "pages/rental.html", {"is_rentaled": True, "pk": self.kwargs['pk']})
+            return render(request, "pages/rental.html", {'form': form, "is_rentaled": True, "pk": self.kwargs['pk']})
 
-        return render(request, "pages/rental.html", {"is_rentaled": False, "pk": self.kwargs['pk']})
+        return render(request, "pages/rental.html", {'form': form, "is_rentaled": False, "pk": self.kwargs['pk']})
     
     def post(self, request, **kwargs):
         context = self.get_context_data()
+        form = ReturnForm()
 
         # 借りるときの処理
         if "cancel" in request.POST:
@@ -150,6 +152,7 @@ class RentalForm(LoginRequiredMixin, TemplateView):
 
         # 返すときの処理
         elif "return" in request.POST:
+            form = ReturnForm(request.POST)
             try:
                 rental_umbrella = Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
             except ObjectDoesNotExist:
@@ -157,14 +160,19 @@ class RentalForm(LoginRequiredMixin, TemplateView):
 
             # 借りている人と今返却フォームを操作している人が同じか見る
             if rental_umbrella.borrower == request.user:
-                rental_umbrella.borrower = None
-                rental_umbrella.save()
+                if form.is_valid():
+                    rental_umbrella.borrower = None
+                    rental_umbrella.place = form.cleaned_data.get('place')
+                    rental_umbrella.save()
 
-                rental_log = RentalLog.objects.create(
-                    user=request.user,
-                    umbrella=rental_umbrella,
-                    is_rental=False
-                )
+                    rental_log = RentalLog.objects.create(
+                        user=request.user,
+                        umbrella=rental_umbrella,
+                        is_rental=False
+                    )
+                else:
+                    messages.error(request, "❌ フォームの入力内容が正しくありません")
+                    return redirect(request.path)
                 return render(request, "pages/successfull_return.html")
             else:
                 messages.error(request, "❌ その傘は別の人に借りられています")
@@ -181,16 +189,18 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
         return context
 
     def get(self, request):
+        form = ReturnForm()
         # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
         try:
             is_rentaled = Umbrellas.objects.get(borrower=request.user)
         except ObjectDoesNotExist:
-            return render(request, "pages/rental_another.html", {"is_rentaled": True})
+            return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": True})
 
-        return render(request, "pages/rental_another.html", {"is_rentaled": False})
+        return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": False})
     
     def post(self, request):
         umbrella_name = request.POST.get('umbrella_number')
+        form = ReturnForm(request.POST)
 
         # 借りるときの処理
         if "cancel" in request.POST:
@@ -204,7 +214,7 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
                     messages.error(request, "❌ その傘はすでに借りられているか、返却されていません")
                     return redirect(request.path) 
                 else:
-                    rental_umbrella.borrower = CustomUser.objects.get(username=self.context["user"])
+                    rental_umbrella.borrower = CustomUser.objects.get(username=request.user)
                     rental_umbrella.save()
 
                     rental_log = RentalLog.objects.create(
@@ -227,14 +237,19 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
 
             # 借りている人と今返却フォームを操作している人が同じか見る
             if rental_umbrella.borrower == request.user:
-                rental_umbrella.borrower = None
-                rental_umbrella.save()
+                if form.is_valid():
+                    rental_umbrella.borrower = None
+                    rental_umbrella.place = form.cleaned_data.get('place')
+                    rental_umbrella.save()
 
-                rental_log = RentalLog.objects.create(
-                    user=request.user,
-                    umbrella=rental_umbrella,
-                    is_rental=False
-                )
+                    rental_log = RentalLog.objects.create(
+                        user=request.user,
+                        umbrella=rental_umbrella,
+                        is_rental=False
+                    )
+                else:
+                    messages.error(request, "❌ フォームの入力内容が正しくありません")
+                    return redirect(request.path)
                 return render(request, "pages/successfull_return.html")
             else:
                 messages.error(request, "❌ その傘は別の人に借りられています")
@@ -276,7 +291,6 @@ class LostUmbrella(LoginRequiredMixin, TemplateView):
         except ObjectDoesNotExist:
                 messages.error(request, "❌ その傘は別の人に借りられています")
                 return redirect(request.path)
-        
 
 # パスワード忘れのフォーム
 class CustomPasswordResetView(TemplateView):

@@ -123,3 +123,14 @@ class UmbrellaForm(forms.ModelForm):
         label='貸出者',
         empty_label="選択なし",
     )
+
+class ReturnForm(forms.ModelForm):
+    class Meta:
+        model = Umbrellas
+        fields = ["place"]
+
+    place = forms.ChoiceField(
+        label="傘の場所",
+        choices=Umbrellas.STATUS_PRACE,
+        required=True,
+    )
