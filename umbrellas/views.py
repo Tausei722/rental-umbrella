@@ -270,7 +270,7 @@ class CustomPasswordResetView(TemplateView):
 
             パスワードをリセットするには、以下のリンクをクリックしてください:
 
-            {protocol}://{domain}{reset_url}
+            {protocol}://{domain}{reset_url}{uidb64}{token}
 
             このリンクの有効期限は1時間です。
             """
@@ -279,7 +279,9 @@ class CustomPasswordResetView(TemplateView):
             username=request.user.username,
             protocol="https",
             domain="share-kasa-f551340d651d.herokuapp.com",
-            reset_url="/password_reset_confirm/{uidb64}/{token}"
+            reset_url="/password_reset_confirm"
+            uidb64 = "/{uidb64}"
+            token = "/{token}"
         )
 
         # 送信
