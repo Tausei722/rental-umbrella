@@ -11,6 +11,10 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 import smtplib
 from email.mime.text import MIMEText
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from .models import CustomUser
 
 from django.conf import settings
 import os
@@ -63,8 +67,8 @@ class CustomLoginView(LoginView):
     authentication_form = LoginForm
 
     def get_success_url(self):
-        success_redirect_url = self.request.GET.get("next") or "/"
-        return success_redirect_url
+        next_url = self.request.GET.get("next")
+        return next_url if next_url else "/" 
 
     def post(self, request):
         form = LoginForm(data=request.POST)
@@ -242,11 +246,6 @@ class LostUmbrella(LoginRequiredMixin, TemplateView):
         
 
 # パスワード忘れのフォーム
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.contrib.auth.tokens import default_token_generator
-from .models import CustomUser
-from django.conf import settings
 class CustomPasswordResetView(TemplateView):
     template_name = "registration/password_reset_form.html"
 
