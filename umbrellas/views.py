@@ -96,7 +96,7 @@ class LogoutView(TemplateView):
         return render(request, "pages/home.html", {"logout": True})
 
 # QRで傘借りる
-class RentalForm(LoginRequiredMixin, TemplateView):
+class RentalForm(TemplateView):
     template_name = "pages/rental.html"
 
     def get_context_data(self, **kwargs):
@@ -107,6 +107,10 @@ class RentalForm(LoginRequiredMixin, TemplateView):
     
     def get(self, request, *args, **kwargs):
         form = ReturnForm()
+        # コン画面がQRで遷移するとき絶対にログイン要求をされるのでここだけRequire使わずに手動でログイン
+        if request.user == None:
+            return render(request, "pages/login.html")
+
         try:
             Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
         except ObjectDoesNotExist:
@@ -178,7 +182,7 @@ class RentalForm(LoginRequiredMixin, TemplateView):
                 return redirect(request.path)
 
 # 数字入力で傘借りる
-class RentalAnotherForm(LoginRequiredMixin, TemplateView):
+class RentalAnotherForm(TemplateView):
     template_name = "pages/rental_another.html"
 
     def get_context_data(self, **kwargs):
