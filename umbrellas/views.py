@@ -195,6 +195,11 @@ class RentalAnotherForm(TemplateView):
 
     def get(self, request):
         form = ReturnForm()
+        # この画面で遷移するとき絶対にログイン要求をされるのでここだけRequire使わずに手動でログイン
+        if not request.user.is_authenticated:
+            time.sleep(2)
+            return redirect("/login/")
+
         # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
         try:
             is_rentaled = Umbrellas.objects.get(borrower=request.user)
