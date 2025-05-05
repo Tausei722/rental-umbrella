@@ -80,7 +80,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     sex = models.CharField("性別",max_length=225,choices=STATUS_SEX)
     create_at = models.DateField("登録日",auto_now_add=True, null=True)
     update_at = models.DateField("変更された日",auto_now=True, null=True)
-
+    borrowed_umbrella = models.ForeignKey(
+        "Umbrellas",
+        verbose_name="借りている傘",
+        null=True,  # 🔥 `null=True` で傘を借りていない状態を許容！
+        blank=True,
+        on_delete=models.SET_NULL,  # ✅ ユーザーが削除されても傘情報は残す！
+        related_name="current_borrower"
+    )
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email"]
 
