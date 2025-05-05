@@ -152,7 +152,7 @@ class RentalForm(TemplateView):
                         is_rental=True
                     )
 
-                    rental_user = CustomUser.objects.get(username=context["user"])
+                    rental_user = request.user
                     rental_user.borrowed_umbrella = rental_umbrella
                     rental_user.save()
                     return render(request, "pages/successfull_rental.html")
@@ -180,7 +180,7 @@ class RentalForm(TemplateView):
                         is_rental=False
                     )
 
-                    rental_user = CustomUser.objects.get(username=context["user"])
+                    rental_user = request.user
                     rental_user.borrowed_umbrella = None
                     rental_user.save()
                 else:
@@ -241,7 +241,7 @@ class RentalAnotherForm(TemplateView):
                         is_rental=True
                     )
 
-                    rental_user = CustomUser.objects.get(username=request.user)
+                    rental_user = request.user
                     rental_user.borrowed_umbrella = rental_umbrella
                     rental_user.save()
                     return render(request, "pages/successfull_rental.html")
@@ -269,7 +269,7 @@ class RentalAnotherForm(TemplateView):
                         umbrella=rental_umbrella,
                         is_rental=False
                     )
-                    rental_user = CustomUser.objects.get(username=request.user)
+                    rental_user = request.user
                     rental_user.borrowed_umbrella = None
                     rental_user.save()
                 else:
