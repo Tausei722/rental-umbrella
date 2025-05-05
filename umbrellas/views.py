@@ -10,6 +10,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 import smtplib
+import time
 from email.mime.text import MIMEText
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -109,6 +110,7 @@ class RentalForm(TemplateView):
         form = ReturnForm()
         # コン画面がQRで遷移するとき絶対にログイン要求をされるのでここだけRequire使わずに手動でログイン
         if not request.user.is_authenticated:
+            time.sleep(2)
             return redirect("/login/")
 
         try:
