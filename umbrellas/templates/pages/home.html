@@ -3,9 +3,10 @@
 {% block title %}ホーム{% endblock %}
 
 {% block content %}
-  <h1>{{ username }} さん！</h1>
-  <h2>ホームページへようこそ</h2>
-  <p>これはホームページの内容です。</p>
+  <h1>{{ username }} さん！おかえりなさい！</h1>
+  <h2>レンタル傘にようこそ</h2>
+  <p>急な天候の変化に備えて誰でも自由に使える傘を設置しました</p>
+  <p>ぜひご自由にお使いください</p>
   {% if rental_umbrella %}
     <h2>現在,番号 {{ rental_umbrella}}の傘を借りています</h2>
   {% else %}
