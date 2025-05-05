@@ -108,8 +108,8 @@ class RentalForm(TemplateView):
     def get(self, request, *args, **kwargs):
         form = ReturnForm()
         # コン画面がQRで遷移するとき絶対にログイン要求をされるのでここだけRequire使わずに手動でログイン
-        if request.user == None:
-            return render(request, "pages/login.html")
+        if not request.user.is_authenticated:
+            return redirect("/login/")
 
         try:
             Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
