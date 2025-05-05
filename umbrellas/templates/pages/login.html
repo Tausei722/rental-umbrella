@@ -5,13 +5,13 @@
 {% block content %}
 <form method="post" action="/login/">
   {% csrf_token %}
-  <h1 class="text-3xl flex justify-center pt-4">ログイン</h1>
+  <h1 class="text-[28px] flex justify-center pt-4">ログイン</h1>
   <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
     {% if form.errors %}
       {{form.errors}}
     {% endif %}
-    <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
-      <label class="w-fit h-full px-2" for="{{ form.name.id_for_label }}">名前</label>
+    <div class="w-10/11 h-full grid grid-cols-[1fr_3fr] px-3 py-9 rounded-md content-shadow content-color md:w-3/5 sm:px-10" >
+      <label class="w-hull flex items-center grid place-items-center text-[20px] md:text-[25px] " for="{{ form.name.id_for_label }}">名前</label>
       {{ form.username }}
       {% if form.username.errors %}
       <div class="error">
@@ -20,8 +20,8 @@
       {% endif %}
     </div>
 
-    <div class="w-3/4 h-full grid grid-cols-[1fr_3fr] px-8 py-8 rounded-md content-shadow content-color">
-      <label class="w-fit px-2" for="{{ form.password.id_for_label }}">パスワード</label>
+    <div class="w-10/11 h-full grid grid-cols-[4fr_9fr] px-3 py-8 rounded-md content-shadow content-color md:w-3/5 sm:px-10 sm:grid-cols-[2fr_5fr] md:px-1">
+      <label class="w-full flex items-center grid place-items-center text-[20px] md:text-[25px]" for="{{ form.password.id_for_label }}">パスワード</label>
       {{ form.password }}
       {% if form.password.errors %}
       <div class="error">

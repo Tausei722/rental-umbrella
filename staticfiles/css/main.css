@@ -55,3 +55,28 @@ body {
     border: solid 3px red;
     outline: 0;
 }
+
+.break-point {
+    font-size: 20px;
+
+}
+@media (min-width:360px) and (max-width: 390px) {
+    .break-point{
+        font-size: 14px;
+    }
+}
+@media (min-width:390px) and (max-width:415px) {
+    .break-point{
+        font-size: 15px;
+    }
+}
+@media (min-width:415px) and (max-width:450px) {
+    .break-point{
+        font-size: 16px;
+    }
+}
+@media (min-width:450px) and (max-width:505px) {
+    .break-point{
+        font-size: 17px;
+    }
+}
