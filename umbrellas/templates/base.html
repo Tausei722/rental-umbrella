@@ -24,8 +24,11 @@
     <nav class="menu">
       <button class="close-btn">✖</button>
       <a class="humg-menu p-1" href="/">・ホーム</a>
-      <a class="humg-menu p-1" href="/rental/">・レンタルする</a>
+      {% if borrowed_umbrella %}
       <a class="humg-menu p-1" href="/rental/">・返却する</a>
+      {% else %}
+      <a class="humg-menu p-1" href="/rental/">・レンタルする</a>
+      {% endif %}
       <a class="humg-menu p-1" href="/lost_umbrella">・傘紛失届け</a>
       <a class="humg-menu p-1" href="/logout/">・ログアウト</a>
       <a class="humg-menu p-1" href="/form/">・他のアカウントでログイン</a>
