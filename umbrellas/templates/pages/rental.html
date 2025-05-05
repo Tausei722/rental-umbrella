@@ -26,12 +26,14 @@
       <button name="cancel" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">キャンセル</button>
     {% else %}
       <label for="返却場所">返却場所</label>
-      {{ form.place }}
-      {% if form.username.errors %}
-      <div class="error">
-        {{ form.username.errors }}
+      <div class="border border-black">
+        {{ form.place }}
+        {% if form.username.errors %}
+        <div class="error">
+          {{ form.username.errors }}
+        </div>
+        {% endif %}
       </div>
-      {% endif %}
 
       <button type="submit" name="return" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">返却</button>
       <!-- ホームに戻す -->
