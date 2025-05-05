@@ -6,13 +6,13 @@ from django.contrib.auth.forms import AuthenticationForm
 
 # 学部等の情報を入れさせるとこまで
 class CustomForm(forms.ModelForm):
-    username = forms.CharField(label='名前',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
-    email = forms.EmailField(label='メール',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
-    password = forms.CharField(label='パスワード',widget=forms.PasswordInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
-    password_confirm = forms.CharField(label='パスワード確認',widget=forms.PasswordInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
-    faculty = forms.ChoiceField(choices=STATUS_FACULTY, label='学部',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
-    grade = forms.ChoiceField(choices=STATUS_GRADE, label='学年',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
-    sex = forms.ChoiceField(choices=STATUS_SEX, label='性別',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4'}))
+    username = forms.CharField(label='名前',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-[19px] sm:text-[25px]'}))
+    email = forms.EmailField(label='メール',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-[19px] sm:text-[25px]'}))
+    password = forms.CharField(label='パスワード',widget=forms.PasswordInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-[19px] sm:text-[25px]'}))
+    password_confirm = forms.CharField(label='パスワード確認',widget=forms.PasswordInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-[19px] sm:text-[25px]'}))
+    faculty = forms.ChoiceField(choices=STATUS_FACULTY, label='学部',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4 text-[19px] sm:text-[25px]'}))
+    grade = forms.ChoiceField(choices=STATUS_GRADE, label='学年',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4 text-[19px] sm:text-[25px]'}))
+    sex = forms.ChoiceField(choices=STATUS_SEX, label='性別',widget=forms.Select(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] px-4 text-[19px] sm:text-[25px]'}))
 
     # フォームデータのセット
     class Meta:
@@ -73,8 +73,8 @@ class CustomForm(forms.ModelForm):
 
 # ログインフォームのフォーム作成
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label='名前',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
-    password = forms.CharField(label='パスワード',widget=forms.PasswordInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px]'}))
+    username = forms.CharField(label='名前',widget=forms.TextInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-[19px] sm:text-[25px]'}))
+    password = forms.CharField(label='パスワード',widget=forms.PasswordInput(attrs={'class': 'border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-[19px] sm:text-[25px]'}))
 
     class Meta:
         model = CustomUser
