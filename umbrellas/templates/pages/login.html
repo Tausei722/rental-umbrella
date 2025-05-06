@@ -5,8 +5,7 @@
 {% block content %}
 <form method="post" action="/login/">
   {% csrf_token %}
-  <h1 class="text-[28px] flex justify-center pt-4">ログイン</h1>
-  <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
+  <div class="w-full text-center flex flex-col justify-center items-center mt-10 gap-12">
     {% if form.errors %}
       {{form.errors}}
     {% endif %}
