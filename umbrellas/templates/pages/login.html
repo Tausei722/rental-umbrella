@@ -5,12 +5,7 @@
 {% block content %}
 <form method="post" action="/login/">
   {% csrf_token %}
-<<<<<<< HEAD
   <div class="w-full text-center flex flex-col justify-center items-center mt-10 gap-12">
-=======
-  <h1 class="text-3xl flex justify-center pt-4">ログイン</h1>
-  <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
->>>>>>> cb9e457a0e7836dca6ce8f74631c06bc0c133a60
     {% if form.errors %}
       {{form.errors}}
     {% endif %}
