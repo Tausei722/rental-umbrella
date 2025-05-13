@@ -52,6 +52,7 @@ class SigninView(TemplateView):
 
     def post(self, request):
         form = CustomForm(request.POST)
+
         # 入力した情報をDBにセーブし成功ページへリダイレクト
         if form.is_valid():
             form.save()
@@ -375,7 +376,7 @@ class ContactView(LoginRequiredMixin, TemplateView):
     def get(self, request):
         form = ContactForm()
         return render(request, 'pages/contact.html', {"form": form})
-    
+
     def post(self, request):
         form = ContactForm(request.POST)
 
