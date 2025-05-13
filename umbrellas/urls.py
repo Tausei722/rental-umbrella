@@ -1,6 +1,6 @@
 # umbrellas/urls.py
 from django.urls import path
-from .views import HomeView, SigninView, CustomLoginView, LogoutView, RentalForm, RentalAnotherForm, LostUmbrella, CustomPasswordResetView
+from .views import HomeView, SigninView, CustomLoginView, LogoutView, RentalForm, RentalAnotherForm, LostUmbrella, ContactView, CustomPasswordResetView
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -12,6 +12,7 @@ urlpatterns = [
     path('rental/', RentalAnotherForm.as_view(), name="rental_another"),
     path('rental/rental/<str:pk>', RentalForm.as_view(), name="rental"),
     path('lost_umbrella/', LostUmbrella.as_view(), name="lost_umbrella"),
+    path('contact/', ContactView.as_view(), name="contact"),
 
     # パスワード再設定フォーム
     path("password_reset/", CustomPasswordResetView.as_view(), name="password_reset"),  # ✅ リセットフォーム

@@ -1,7 +1,7 @@
 # umbrellas/views.py
 
 from django.views.generic import TemplateView
-from .forms import CustomForm, LoginForm, ReturnForm
+from .forms import CustomForm, LoginForm, ReturnForm, ContactForm
 from .models import Umbrellas, CustomUser, LostComments, RentalLog
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
@@ -16,6 +16,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from .models import CustomUser
+from django.core.mail import send_mail
 
 from django.conf import settings
 import os
@@ -366,3 +367,21 @@ class CustomPasswordResetView(TemplateView):
             return render(request, "registration/password_reset_form.html", {"submit": "SMTP エラーが発生しました: {e}"})
 
         return render(request, "registration/password_reset_form.html", {"submit": "メールが送信されました"})
+    
+# お問い合わせフォームの作成
+class ContactView(LoginRequiredMixin, TemplateView):
+    template_name = "pages/contact.html"
+
+    def get(self, request):
+        form = ContactForm()
+        return render(request, 'pages/contact.html', {"form": form})
+    
+    def post(self, request):
+        form = ContactForm(request.POST)
+
+        if form.is_valid():
+            contact = form.save(commit=False)
+            contact.username = request.user
+            form.save()
+            return render(request, 'pages/successfull_contact_form.html')
+        return render(request, 'pages/contact.html', {"form": form})

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Umbrellas, RentalLog, UmbrellaLog, LostComments
+from .models import CustomUser, Umbrellas, RentalLog, UmbrellaLog, LostComments, Contacts
 from .forms import UmbrellaForm
 from umbrellas.management.commands.createUmbrella import Command
 
@@ -82,3 +82,4 @@ admin.site.register(Umbrellas, UmbrellaAdmin)
 admin.site.register(RentalLog)
 admin.site.register(UmbrellaLog, UmbrellaLogAdmin)
 admin.site.register(LostComments)
+admin.site.register(Contacts)

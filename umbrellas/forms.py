@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser, Umbrellas, STATUS_FACULTY, STATUS_GRADE, STATUS_SEX
+from .models import CustomUser, Umbrellas, Contacts, STATUS_FACULTY, STATUS_GRADE, STATUS_SEX
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import AuthenticationForm
@@ -134,3 +134,17 @@ class ReturnForm(forms.ModelForm):
         choices=Umbrellas.STATUS_PRACE,
         required=True,
     )
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contacts
+        fields = ["email", "message"]
+        widgets = {
+            "message": forms.Textarea(attrs={
+                "class": "border border-gray-400 rounded-lg p-2 w-full h-20 text-lg bg-white ",
+                "placeholder": "ここにお問い合わせ内容を入力してください...",
+            }),
+            "email": forms.TextInput(attrs={
+                "class": "border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-[19px] sm:text-[25px]",
+            }),
+        }

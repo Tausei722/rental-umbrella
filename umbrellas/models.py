@@ -196,3 +196,16 @@ class LostComments(models.Model):
     class Meta:
         verbose_name = "紛失届け"
         verbose_name_plural = "紛失届け"
+
+class Contacts(models.Model):
+    username = models.ForeignKey(CustomUser,verbose_name="送信者",on_delete=models.DO_NOTHING)
+    email = models.EmailField("メールアドレス",max_length=225)
+    message = models.CharField(max_length=225)
+    creaste_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.message
+
+    class Meta:
+        verbose_name = "ご意見"
+        verbose_name_plural = "お問い合わせのご意見"
