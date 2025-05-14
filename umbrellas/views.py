@@ -131,7 +131,7 @@ class RentalForm(TemplateView):
 
         # この画面がQRで遷移するとき絶対にログイン要求をされるのでここだけRequire使わずに手動でログイン
         if not request.user.is_authenticated:
-            time.sleep(2)
+            # time.sleep(2)
             return redirect("/login/")
 
         # 借りるときの処理
