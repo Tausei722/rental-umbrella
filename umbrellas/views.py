@@ -23,6 +23,10 @@ from django.conf import settings
 import os
 from dotenv import load_dotenv
 
+# 404エラーページのカスタマイズ
+def custom_404(request, exception):
+    return render(request, "404.html", status=404)
+
 # ホームページのビュー
 class HomeView(LoginRequiredMixin, TemplateView):
     template_name = "pages/home.html"
