@@ -112,26 +112,21 @@ class RentalForm(TemplateView):
     def get(self, request, *args, **kwargs):
         form = ReturnForm()
 
+        if request.user.is_authenticated:
+            try:
+                # すでにレンタルしているかどうか仕分ける
+                is_rentaled = Umbrellas.objects.get(borrower=request.user)
+                return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": is_rentaled})
+            except Umbrellas.DoesNotExist:
+                # そもそもログインしてなかったら
+                return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": True})
+
         try:
             Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
         except ObjectDoesNotExist:
             return render(request, "pages/404.html", {'form': form})
 
-        # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
-        try:
-            try:
-                if not request.user.is_authenticated:
-                    return redirect("/login/")
-            except AttributeError:  # user が None か、属性がない場合
-                return redirect("/login/")
-            except Exception as e:  # その他の予期しないエラー対策
-                print(f"Unexpected error: {e}")  # ログに出力
-                return redirect("/login/")
-            is_rentaled = Umbrellas.objects.get(borrower=request.user)
-        except ObjectDoesNotExist:
-            return render(request, "pages/rental.html", {'form': form, "is_rentaled": True, "pk": self.kwargs['pk']})
-
-        return render(request, "pages/rental.html", {'form': form, "is_rentaled": False, "pk": self.kwargs['pk']})
+        return render(request, "pages/rental.html", {'form': form, "is_rentaled": True, "pk": self.kwargs['pk']})
     
     def post(self, request, **kwargs):
         context = self.get_context_data()
@@ -215,31 +210,19 @@ class RentalForm(TemplateView):
 class RentalAnotherForm(TemplateView):
     template_name = "pages/rental_another.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["pk"] = self.kwargs.get("pk")
-        context["user"] = self.request.user
-        return context
-
     def get(self, request):
         form = ReturnForm()
 
-        # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
-        try:
+        if request.user.is_authenticated:
             try:
-                if not request.user.is_authenticated:
-                    return redirect("/login/")
-            except AttributeError:  # user が None か、属性がない場合
-                return redirect("/login/")
-            except Exception as e:  # その他の予期しないエラー対策
-                print(f"Unexpected error: {e}")  # ログに出力
-                return redirect("/login/")
+                # すでにレンタルしているかどうか仕分ける
+                is_rentaled = Umbrellas.objects.get(borrower=request.user)
+                return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": is_rentaled})
+            except Umbrellas.DoesNotExist:
+                # そもそもログインしてなかったら
+                return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": True})
 
-            is_rentaled = Umbrellas.objects.get(borrower=request.user)
-        except ObjectDoesNotExist:
-            return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": True})
-
-        return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": False})
+        return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": True})
     
     def post(self, request):
         umbrella_name = request.POST.get('umbrella_number')
