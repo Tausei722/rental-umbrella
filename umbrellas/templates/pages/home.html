@@ -1,18 +1,21 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}ホーム{% endblock %}
 
 {% block content %}
-  <h1>{{ username }} さん！おかえりなさい！</h1>
-  <h2>レンタル傘にようこそ</h2>
-  <p>急な天候の変化に備えて誰でも自由に使える傘を設置しました</p>
-  <p>ぜひご自由にお使いください</p>
-  {% if rental_umbrella %}
-    <h2>現在,番号 {{ rental_umbrella}}の傘を借りています</h2>
-  {% else %}
-    <h2>現在借りている傘はありません</h2>
-  {% endif %}
-  {% if logout %}
-    <h2>ログアウトが失敗しました</h2>
-{% endif %}
+  <div class="px-4">
+    <h1>{{ username }} さん！おかえりなさい！</h1>
+    <h2>レンタル傘にようこそ</h2>
+    <p>急な天候の変化に備えて誰でも自由に使える傘を設置しました</p>
+    <p>ぜひご自由にお使いください</p>
+    {% if rental_umbrella %}
+      <h2>現在,番号 {{ rental_umbrella}}の傘を借りています</h2>
+    {% else %}
+      <h2>現在借りている傘はありません</h2>
+    {% endif %}
+    {% if logout %}
+      <h2>ログアウトが失敗しました</h2>
+    {% endif %}
+  </div>
+  <img src="{% static 'images/introduce.png' %}" alt="レンタル傘の紹介画像">
 {% endblock %}
