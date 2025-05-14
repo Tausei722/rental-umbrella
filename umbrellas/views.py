@@ -116,7 +116,10 @@ class RentalForm(TemplateView):
             try:
                 # すでにレンタルしているかどうか仕分ける
                 is_rentaled = Umbrellas.objects.get(borrower=request.user)
-                return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": is_rentaled})
+                if is_rentaled:
+                    return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": False})
+                else:
+                    return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": True})
             except Umbrellas.DoesNotExist:
                 # そもそもログインしてなかったら
                 return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": True})
@@ -217,7 +220,10 @@ class RentalAnotherForm(TemplateView):
             try:
                 # すでにレンタルしているかどうか仕分ける
                 is_rentaled = Umbrellas.objects.get(borrower=request.user)
-                return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": is_rentaled})
+                if is_rentaled:
+                    return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": False})
+                else:
+                    return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": True})
             except Umbrellas.DoesNotExist:
                 # そもそもログインしてなかったら
                 return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": True})
