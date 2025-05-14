@@ -137,22 +137,21 @@ class RentalForm(TemplateView):
         context = self.get_context_data()
         form = ReturnForm()
 
-        # この画面がQRで遷移するとき絶対にログイン要求をされるのでここだけRequire使わずに手動でログイン
-        try:
-            if not request.user.is_authenticated:
-                return redirect("/login/")
-        except AttributeError:  # user が None か、属性がない場合
-            return redirect("/login/")
-        except Exception as e:  # その他の予期しないエラー対策
-            print(f"Unexpected error: {e}")  # ログに出力
-            return redirect("/login/")
-
         # 借りるときの処理
         if "cancel" in request.POST:
             return render(request, "pages/home.html")
 
         if "lend" in request.POST:
             try:
+                # この画面がQRで遷移するとき絶対にログイン要求をされるのでここだけRequire使わずに手動でログイン
+                try:
+                    if not request.user.is_authenticated:
+                        return redirect("/login/")
+                except AttributeError:  # user が None か、属性がない場合
+                    return redirect("/login/")
+                except Exception as e:  # その他の予期しないエラー対策
+                    print(f"Unexpected error: {e}")  # ログに出力
+                    return redirect("/login/")
                 rental_umbrella = Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
                 
                 # すでにborrowerがいた場合はエラーを変えす
@@ -227,8 +226,6 @@ class RentalAnotherForm(TemplateView):
 
         # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
         try:
-            is_rentaled = Umbrellas.objects.get(borrower=request.user)
-        except ObjectDoesNotExist:
             try:
                 if not request.user.is_authenticated:
                     return redirect("/login/")
@@ -237,6 +234,9 @@ class RentalAnotherForm(TemplateView):
             except Exception as e:  # その他の予期しないエラー対策
                 print(f"Unexpected error: {e}")  # ログに出力
                 return redirect("/login/")
+
+            is_rentaled = Umbrellas.objects.get(borrower=request.user)
+        except ObjectDoesNotExist:
             return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": True})
 
         return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": False})
