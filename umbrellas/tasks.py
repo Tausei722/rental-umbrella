@@ -5,13 +5,16 @@ from django.conf import settings
 from email.mime.text import MIMEText
 import smtplib
 from datetime import datetime, timedelta
+from celery.schedules import crontab
+from celery.task import periodic_task
 
+@periodic_task(run_every=crontab(hour=10, minute=0))
 @shared_task
 def check_reservation_status():
     now = datetime.now()
-    due = now - timedelta(days=1)
+    return_due = now - timedelta(days=1)
 
-    reservations = CustomUser.objects.filter(borrowed_umbrella__isnull=False,update_at__lte=due)
+    reservations = CustomUser.objects.filter(borrowed_umbrella__isnull=False,update_at__lte=return_due)
 
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
