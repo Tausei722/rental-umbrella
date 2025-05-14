@@ -14,5 +14,4 @@ services:
       bash -c "python manage.py collectstatic --noinput &&
                python manage.py makemigrations &&
                python manage.py migrate &&
-               python manage.py runserver 0.0.0.0:8000 &&
-               celery -A umbrellas beat --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+               python manage.py runserver 0.0.0.0:8000"
