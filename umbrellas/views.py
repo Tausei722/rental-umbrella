@@ -130,8 +130,13 @@ class RentalForm(TemplateView):
         form = ReturnForm()
 
         # この画面がQRで遷移するとき絶対にログイン要求をされるのでここだけRequire使わずに手動でログイン
-        if not request.user.is_authenticated:
-            # time.sleep(2)
+        try:
+            if not request.user.is_authenticated:
+                return redirect("/login/")
+        except AttributeError:  # user が None か、属性がない場合
+            return redirect("/login/")
+        except Exception as e:  # その他の予期しないエラー対策
+            print(f"Unexpected error: {e}")  # ログに出力
             return redirect("/login/")
 
         # 借りるときの処理
@@ -225,8 +230,13 @@ class RentalAnotherForm(TemplateView):
         form = ReturnForm(request.POST)
 
         # この画面がQRで遷移するとき絶対にログイン要求をされるのでここだけRequire使わずに手動でログイン
-        if not request.user.is_authenticated:
-            # time.sleep(2)
+        try:
+            if not request.user.is_authenticated:
+                return redirect("/login/")
+        except AttributeError:  # user が None か、属性がない場合
+            return redirect("/login/")
+        except Exception as e:  # その他の予期しないエラー対策
+            print(f"Unexpected error: {e}")  # ログに出力
             return redirect("/login/")
 
         # 借りるときの処理
