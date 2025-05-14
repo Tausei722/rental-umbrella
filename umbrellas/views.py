@@ -1,7 +1,7 @@
 # umbrellas/views.py
 
 from django.views.generic import TemplateView
-from .forms import CustomForm, LoginForm, ReturnForm, ContactForm
+from .forms import CustomForm, LoginForm, ReturnForm, ContactForm, RentalCheckForm
 from .models import Umbrellas, CustomUser, LostComments, RentalLog
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
@@ -416,3 +416,25 @@ class ContactView(LoginRequiredMixin, TemplateView):
             form.save()
             return render(request, 'pages/successfull_contact_form.html')
         return render(request, 'pages/contact.html', {"form": form})
+    
+class RentalCheckView(LoginRequiredMixin, TemplateView):
+    template_name = "pages/rental_check.html"
+
+    def get(self, request):
+        form = RentalCheckForm()
+        return render(request, "pages/rental_check.html", {"form": form})
+
+    def post(self, request):
+        form = RentalCheckForm(request.POST)
+        if form.is_valid():
+            place = form.cleaned_data.get("place")
+            try:
+                umbrellas = Umbrellas.objects.filter(place=place,borrower__isnull=True)
+                if umbrellas is not None:
+                    print(umbrellas)
+                    return render(request, "pages/rental_check.html", {"form": form, "umbrellas": umbrellas})
+                else:
+                    messages.success(request, "その場所に傘はありません")
+            except Umbrellas.DoesNotExist:
+                messages.error(request, "エラーが発生しました")
+        return render(request, "pages/rental_check.html", {"form": form})
