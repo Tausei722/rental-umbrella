@@ -115,6 +115,12 @@ class RentalForm(TemplateView):
         try:
             Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
         except ObjectDoesNotExist:
+            return render(request, "pages/404.html", {'form': form})
+
+        # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
+        try:
+            is_rentaled = Umbrellas.objects.get(borrower=request.user)
+        except ObjectDoesNotExist:
             try:
                 if not request.user.is_authenticated:
                     return redirect("/login/")
@@ -123,12 +129,6 @@ class RentalForm(TemplateView):
             except Exception as e:  # その他の予期しないエラー対策
                 print(f"Unexpected error: {e}")  # ログに出力
                 return redirect("/login/")
-            return render(request, "pages/404.html", {'form': form})
-
-        # よくないけど借りてる傘を取得しようとしてなかったらエラーを出させて今のページにリダイレクト
-        try:
-            is_rentaled = Umbrellas.objects.get(borrower=request.user)
-        except ObjectDoesNotExist:
             return render(request, "pages/rental.html", {'form': form, "is_rentaled": True, "pk": self.kwargs['pk']})
 
         return render(request, "pages/rental.html", {'form': form, "is_rentaled": False, "pk": self.kwargs['pk']})
