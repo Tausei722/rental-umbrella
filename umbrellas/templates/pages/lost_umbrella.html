@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}傘紛失届け{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'lost_umbrella' %}">
+  {% csrf_token %}
+  <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
+    <div class="text-3xl">
+        <h1>紛失届け</h1> 
+    </div>
+
+
+    {% if messages %}
+      {% for message in messages %}
+        <p class="text-red-500">{{ message }}</p>
+      {% endfor %}
+    {% endif %}
+    {% if is_rentaled %}
+      <div class="flex flex-col gap-4">
+        <label for="紛失理由">なぜ傘を紛失しましたか？(例:失くした、壊れた等)</label>
+        <input type="text" required  name="lost-reason" class="border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-center text-3xl"/>
+
+        <label for="紛失場所">どこで紛失しましたか？</label>
+        <input type="text" required  name="whiere-lost" class="border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-center text-3xl"/>
+
+        <label for="備考">備考</label>
+        <textarea type="text" name="lost-other" class="border border-[#808080] rounded-full px-2 bg-white w-full text-center text-3xl"></textarea>
+      </div>
+
+      <button type="submit" name="lost" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">紛失届けを出す</button>
+      <!-- ホームに戻す -->
+      <button class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">キャンセル</button>
+    {% else %}
+      <h1>借りている傘がありません</h1>
+    {% endif %}
+  </div>
+</form>
+
+{% endblock %}

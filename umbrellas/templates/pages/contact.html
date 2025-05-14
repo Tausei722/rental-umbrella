@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}ログイン{% endblock %}
+
+{% block content %}
+<form method="post" action="/contact/">
+  {% csrf_token %}
+  <div class="w-full text-center flex flex-col justify-center items-center mt-10 gap-12">
+    {% if form.errors %}
+      {{form.errors}}
+    {% endif %}
+
+    <div class="w-10/11 h-full grid grid-cols-[4fr_9fr] px-3 py-8 rounded-md content-shadow content-color md:w-3/5 sm:px-10 sm:grid-cols-[2fr_5fr] md:px-1">
+      <label class="w-full flex items-center grid place-items-center text-[20px] md:text-[25px]" for="{{ form.email.id_for_label }}">メールアドレス</label>
+      {{ form.email }}
+      {% if form.email.errors %}
+      <div class="error">
+        {{ form.email.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="w-10/11 h-full grid grid-cols-[4fr_9fr] px-3 py-8 rounded-md content-shadow content-color md:w-3/5 sm:px-10 sm:grid-cols-[2fr_5fr] md:px-1">
+        <label class="w-full flex items-center grid place-items-center text-[20px] md:text-[25px]" for="{{ form.message.id_for_label }}">メッセージ</label>
+        {{ form.message }}
+        {% if form.message.errors %}
+        <div class="error">
+          {{ form.message.errors }}
+        </div>
+        {% endif %}
+      </div>
+
+    <div class="flex flex-col">
+      <button type="submit" class="btn-color mt-8 mb-2 sm:mb-8 px-8 py-8 cursor-pointer">送信</button>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}サインイン{% endblock %}
+
+{% block content %}
+<form method="post" action="/form/" class="break-point">
+  {% csrf_token %}
+  <h1 class="text-[28px] flex justify-center pt-4">サインアップ</h1>
+  <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
+    {% if form.errors %}
+      {{form.errors}}
+    {% endif %}
+    <div class="w-10/11 h-full grid grid-cols-[1fr_3fr] px-3 py-9 rounded-md content-shadow content-color sm:w-4/5 sm:px-10">
+      <label class="w-full h-full flex items-center grid place-items-center text-[20px] md:text-[25px]" for="{{ form.name.id_for_label }}">名前</label>
+      {{ form.username }}
+      {% if form.username.errors %}
+      <div class="error">
+        {{ form.username.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="break-point w-10/11 h-full grid grid-cols-[4fr_9fr] px-1 py-8 rounded-md content-shadow content-color sm:w-4/5 sm:px-4">
+      <label class="w-full flex items-center grid place-items-center w-full flex items-center grid place-items-center md:text-[25px]" for="{{ form.email.id_for_label }}">メールアドレス</label>
+      {{ form.email }}
+      {% if form.email.errors %}
+      <div class="error">
+        {{ form.email.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="w-10/11 h-full grid grid-cols-[4fr_9fr] px-1 py-8 rounded-md content-shadow content-color sm:w-4/5 sm:px-4 sm:grid-cols-[1fr_3fr]">
+      <label class="w-full flex items-center grid place-items-center text-[20px] md:text-[25px]" for="{{ form.password.id_for_label }}">パスワード</label>
+      {{ form.password }}
+      {% if form.password.errors %}
+      <div class="error">
+        {{ form.password.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="break-point w-10/11 h-full grid grid-cols-[4fr_9fr] px-1 py-8 rounded-md content-shadow content-color sm:w-4/5 sm:px-4">
+      <label class="w-full flex items-center grid place-items-center md:text-[25px]" for="{{ form.password_confirm.id_for_label }}">パスワード確認</label>
+      {{ form.password_confirm }}
+    </div>
+
+    <div class="w-10/11 h-full grid grid-cols-[1fr_3fr] px-3 py-9 rounded-md content-shadow content-color sm:w-4/5 sm:px-10">
+      <label class="w-full flex items-center grid place-items-center text-[20px] md:text-[25px]" for="{{ form.faculty.id_for_label }}">学部</label>
+      {{ form.faculty }}
+      {% if form.faculty.errors %}
+      <div class="error">
+        {{ form.faculty.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="w-10/11 h-full grid grid-cols-[1fr_3fr] px-3 py-9 rounded-md content-shadow content-color sm:w-4/5 sm:px-10">
+      <label class="w-hull flex items-center grid place-items-center text-[20px] md:text-[25px]" for="{{ form.grade.id_for_label }}">学年</label>
+      {{ form.grade }}
+      {% if form.grade.errors %}
+      <div class="error">
+        {{ form.grade.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="w-10/11 h-full grid grid-cols-[1fr_3fr] px-3 py-9 rounded-md content-shadow content-color sm:w-4/5 sm:px-10">
+      <label class="w-hull flex items-center grid place-items-center text-[20px] md:text-[25px]" for="{{ form.sex.id_for_label }}">性別</label>
+      {{ form.sex }}
+      {% if form.sex.errors %}
+      <div class="error">
+        {{ form.sex.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="w-1/2 h-full px-3 py-3 rounded-md content-shadow content-color sm:w-4/5 sm:px-10">
+      <label class="w-hull flex items-center grid place-items-center text-[20px] md:text-[25px]" for="{{ form.sex.id_for_label }}">利用規約に同意する</label>
+      <input type="checkbox" name="consensus" required>
+    </div>
+
+    <button type="submit" class="btn-color mt-8 mb-16 px-8 py-8 cursor-pointer">送信</button>
+  </div>
+</form>
+
+{% endblock %}

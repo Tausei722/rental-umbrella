@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: dockerfile
+run:
+  web: gunicorn myproject.wsgi --log-file -

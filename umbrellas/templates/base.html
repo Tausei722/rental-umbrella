@@ -3,20 +3,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="{% static 'css/humbergerMenu.css' %}">    
-    <title>Rental Umbrella</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="{% static 'js/menu.js' %}" defer></script>
+  <link rel="stylesheet" href="{% static 'css/humbergerMenu.css' %}">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <title>Rental Umbrella</title>
 </head>
-<header class="bg-[#ca6fff] p-4">
-  cdsvf
+<header class="bg-[#8cd4ff] p-4 content-shadow">
+    <a href="/" class="title mr-auto">シェア傘</a>
+  <div class="hamburger-menu p-3">
+    <div class="hamburger-icon">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <nav class="menu">
+      <button class="close-btn">✖</button>
+      <a class="humg-menu p-1" href="/">・ホーム</a>
+      {% if borrowed_umbrella %}
+      <a class="humg-menu p-1" href="/rental/">・返却する</a>
+      {% else %}
+      <a class="humg-menu p-1" href="/rental/">・レンタルする</a>
+      {% endif %}
+      <a class="humg-menu p-1" href="/lost_umbrella">・傘紛失届け</a>
+      <a class="humg-menu p-1" href="/logout/">・ログアウト</a>
+      <a class="humg-menu p-1" href="/login/">・他のアカウントでログイン</a>
+      <a class="humg-menu p-1" href="/form/">・他のアカウントを追加</a>
+      <a class="humg-menu p-1" href="/contact/">・お問い合わせ</a>
+    </nav>
+  </div>
+  <script src="menu.js" defer></script>
 </header>
 
 <body class="">
-  <main class="p-4">
+  <main class="p-2 ms:p-4">
     {% block content %}
     {% endblock %}
   </main>
+
 </body>
 </html>

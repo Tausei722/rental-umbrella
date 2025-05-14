@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}数字入力でレンタルするフォーム{% endblock %}
+
+{% block content %}
+<form method="post" action="/rental/">
+  {% csrf_token %}
+  <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
+    <div class="text-3xl">
+      {% if is_rentaled %}
+        <h1>レンタルフォーム</h1>
+        <p class="text-base">傘を借りるときにここに傘に書いてある番号を入力して下さい</p>
+      {% else %}
+        <h1>返却フォーム</h1>
+      {% endif %}
+    </div>
+
+    <div class="p-12 mb-12">
+      <label for="入力フォーム">傘番号入力フォーム</label>
+      <input type="text" name="umbrella_number" class="border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-center text-3xl"/>
+      {% if messages %}
+        {% for message in messages %}
+          <p class="text-red-500">{{ message }}</p>
+        {% endfor %}
+      {% else %}
+        <p>返却(または貸出)するには傘番号をフォームに入力してください</p>
+      {% endif %}
+    </div>
+    {% if is_rentaled %}
+      <button type="submit" name="lend" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">レンタル</button>
+      <button type="submit" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 pointer-events-none line-through">返却する</button>
+      <button name="cancel" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">キャンセル</button>
+    {% else %}
+      <label for="返却場所">返却場所</label>
+      <div class="border border-black">
+        {{ form.place }}
+        {% if form.username.errors %}
+        <div class="error">
+          {{ form.username.errors }}
+        </div>
+        {% endif %}        
+      </div>
+
+
+      <button type="submit" name="return" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">返却</button>
+      <button type="submit" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 pointer-events-none line-through">レンタル</button>
+      <button name="cancel" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">キャンセル</button>
+    {% endif %}
+  </div>
+</form>
+
+{% endblock %}

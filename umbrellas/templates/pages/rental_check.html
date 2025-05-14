@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}レンタル状況確認{% endblock %}
+
+{% block content %}
+<form method="post" action="/check/" class="break-point">
+  {% csrf_token %}
+  <h1 class="text-[28px] flex justify-center pt-4">レンタル状況確認</h1>
+  <div class="w-full text-center flex flex-col justify-center items-center mt-12 gap-12">
+    {% if form.errors %}
+      {{form.errors}}
+    {% endif %}
+    <div class="w-10/11 h-full grid grid-cols-[1fr_3fr] px-3 py-9 rounded-md content-shadow content-color sm:w-4/5 sm:px-10">
+      <label class="w-full h-full flex items-center grid place-items-center text-[20px] md:text-[25px]" for="{{ form.place.id_for_label }}">場所を指定</label>
+      {{ form.place }}
+      {% if form.place.errors %}
+      <div class="error">
+        {{ form.place.errors }}
+      </div>
+      {% endif %}
+    </div>
+
+    {% if umbrellas %}
+    <div class="grid grid-cols-3 justify-center content-shadow content-color rounded-md">
+      <div></div>
+      <label for="利用可能傘の表" class="w-full content-color">利用可のな傘</label>
+      <div></div>
+      {% for umbrella in umbrellas %}
+        <div class="bg-white flex flex-col justify-center items-center px-3">
+          {{ umbrella }}
+        </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    {% endif %}
+
+    <button type="submit" class="btn-color mt-8 mb-16 px-8 py-8 cursor-pointer">検索</button>
+  </div>
+</form>
+
+{% endblock %}
