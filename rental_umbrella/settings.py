@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'umbrellas',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -119,6 +120,8 @@ AUTH_USER_MODEL = "umbrellas.CustomUser"
 LANGUAGE_CODE = 'ja'
 
 TIME_ZONE = 'Asia/Tokyo'
+CELERY_TIMEZONE = 'Asia/Tokyo'
+CELERY_ENABLE_UTC = False
 
 USE_I18N = True
 
@@ -161,3 +164,8 @@ PASSWORD_RESET_TIMEOUT = 60
 ALLOWED_HOSTS = ["*"]
 
 SESSION_COOKIE_SAMESITE = None
+
+# Celeryの設定
+CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
