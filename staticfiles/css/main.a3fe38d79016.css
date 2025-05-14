@@ -1,0 +1,82 @@
+@font-face {
+    font-family: 'keion-font'; /* 任意のフォント名 */
+    src: url("../fonts/keifont.3d8226e3dfaf.ttf") format('truetype'); /* フォントファイルへのパス */
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'keion-font', Arial, sans-serif;
+}
+
+.content-shadow {
+    font-size: 25px;
+    box-shadow: 0 0 8px #808080;
+}
+
+.inline-shadow {
+    box-shadow: 2px 2px 4px gray;
+}
+
+.content-color {
+    background: #8cd5ff2c;
+}
+
+.btn-color {
+    color: white;
+    background-color: #8cd4ff;
+    border: #808080 solid 2px;
+    border-radius: calc(infinity * 1px);
+    text-align: center;
+    opacity: 1;
+}
+
+.btn-color-second {
+    color: black;
+    background-color: #808080;
+    border: #808080 solid 2px;
+    border-radius: calc(infinity * 1px);
+    text-align: center;
+    opacity: 1;
+}
+
+
+.btn-color:hover {
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.btn-color-second:hover {
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.error {
+    border: solid 3px red;
+    outline: 0;
+}
+
+.break-point {
+    font-size: 20px;
+
+}
+@media (min-width:360px) and (max-width: 390px) {
+    .break-point{
+        font-size: 14px;
+    }
+}
+@media (min-width:390px) and (max-width:415px) {
+    .break-point{
+        font-size: 15px;
+    }
+}
+@media (min-width:415px) and (max-width:450px) {
+    .break-point{
+        font-size: 16px;
+    }
+}
+@media (min-width:450px) and (max-width:505px) {
+    .break-point{
+        font-size: 17px;
+    }
+}
