@@ -148,3 +148,17 @@ class ContactForm(forms.ModelForm):
                 "class": "border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-[19px] sm:text-[25px]",
             }),
         }
+
+class RentalCheckForm(forms.ModelForm):
+    class Meta:
+        model = Umbrellas
+        fields = ["place",]
+
+    place = forms.ChoiceField(
+        label="傘の場所",
+        choices=Umbrellas.STATUS_PRACE,
+        widget=forms.Select(attrs={
+            "class": "border border-[#808080] rounded-full px-2 bg-white w-full h-[50px] text-[19px] sm:text-[25px]",
+        }),
+        required=True,
+    )
