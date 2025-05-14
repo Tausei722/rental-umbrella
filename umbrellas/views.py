@@ -380,7 +380,7 @@ class CustomPasswordResetView(TemplateView):
 
         # 送信
         msg = MIMEText(email_body, "html")
-        msg["Subject"] = "パスワードリセット"
+        msg["Subject"] = "シェア傘アカウントのパスワードリセット"
         msg["From"] = smtp_user
         msg["To"] = form
 
