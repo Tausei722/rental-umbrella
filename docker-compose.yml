@@ -15,4 +15,5 @@ services:
                python manage.py makemigrations &&
                python manage.py migrate &&
                python manage.py runserver 0.0.0.0:8000 &&
-               celery -A umbrellas beat --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+               celery -A umbrellas beat --scheduler django_celery_beat.schedulers:DatabaseScheduler &&
+               heroku run python manage.py collectstatic --noinput"
