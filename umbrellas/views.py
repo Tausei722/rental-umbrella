@@ -200,7 +200,7 @@ class RentalForm(TemplateView):
                 return redirect(request.path)
 
 # 数字入力で傘借りる
-class RentalAnotherForm(LoginRequiredMixin, TemplateView):
+class RentalAnotherForm(TemplateView):
     template_name = "pages/rental_another.html"
 
     def get_context_data(self, **kwargs):
@@ -223,6 +223,11 @@ class RentalAnotherForm(LoginRequiredMixin, TemplateView):
     def post(self, request):
         umbrella_name = request.POST.get('umbrella_number')
         form = ReturnForm(request.POST)
+
+        # この画面がQRで遷移するとき絶対にログイン要求をされるのでここだけRequire使わずに手動でログイン
+        if not request.user.is_authenticated:
+            # time.sleep(2)
+            return redirect("/login/")
 
         # 借りるときの処理
         if "cancel" in request.POST:
