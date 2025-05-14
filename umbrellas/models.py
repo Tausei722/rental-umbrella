@@ -83,9 +83,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     borrowed_umbrella = models.ForeignKey(
         "Umbrellas",
         verbose_name="借りている傘",
-        null=True,  # 🔥 `null=True` で傘を借りていない状態を許容！
+        null=True,
         blank=True,
-        on_delete=models.SET_NULL,  # ✅ ユーザーが削除されても傘情報は残す！
+        on_delete=models.SET_NULL,
         related_name="current_borrower"
     )
     USERNAME_FIELD = "username"

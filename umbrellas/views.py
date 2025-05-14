@@ -17,6 +17,7 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from .models import CustomUser
 from django.core.mail import send_mail
+from datetime import datetime, timedelta
 
 from django.conf import settings
 import os
@@ -110,10 +111,6 @@ class RentalForm(TemplateView):
     
     def get(self, request, *args, **kwargs):
         form = ReturnForm()
-        # コン画面がQRで遷移するとき絶対にログイン要求をされるのでここだけRequire使わずに手動でログイン
-        if not request.user.is_authenticated:
-            time.sleep(2)
-            return redirect("/login/")
 
         try:
             Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])
@@ -132,6 +129,11 @@ class RentalForm(TemplateView):
         context = self.get_context_data()
         form = ReturnForm()
 
+        # この画面がQRで遷移するとき絶対にログイン要求をされるのでここだけRequire使わずに手動でログイン
+        if not request.user.is_authenticated:
+            time.sleep(2)
+            return redirect("/login/")
+
         # 借りるときの処理
         if "cancel" in request.POST:
             return render(request, "pages/home.html")
@@ -147,6 +149,10 @@ class RentalForm(TemplateView):
                 else:
                     rental_umbrella.borrower = CustomUser.objects.get(username=context["user"])
                     rental_umbrella.save()
+
+                    update_user = CustomUser.objects.get(username=request.user.username)
+                    update_user.update_at = datetime.now()
+                    update_user.save()
 
                     rental_log = RentalLog.objects.create(
                         user=request.user,
@@ -194,7 +200,7 @@ class RentalForm(TemplateView):
                 return redirect(request.path)
 
 # 数字入力で傘借りる
-class RentalAnotherForm(TemplateView):
+class RentalAnotherForm(LoginRequiredMixin, TemplateView):
     template_name = "pages/rental_another.html"
 
     def get_context_data(self, **kwargs):
@@ -236,6 +242,10 @@ class RentalAnotherForm(TemplateView):
                 else:
                     rental_umbrella.borrower = CustomUser.objects.get(username=request.user)
                     rental_umbrella.save()
+
+                    update_user = CustomUser.objects.get(username=request.user.username)
+                    update_user.update_at = datetime.now()
+                    update_user.save()
 
                     rental_log = RentalLog.objects.create(
                         user=request.user,
