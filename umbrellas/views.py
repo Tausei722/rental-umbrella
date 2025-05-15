@@ -28,14 +28,16 @@ def custom_404(request, exception):
     return render(request, "404.html", status=404)
 
 # ホームページのビュー
-class HomeView(LoginRequiredMixin, TemplateView):
+class HomeView(TemplateView):
     template_name = "pages/home.html"
     login_url = "/login/"
     redirect_field_name = "next"
 
     def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
-            context["username"] = self.request.user.username
+            if not self.request.user is None:
+                context["username"] = self.request.user.username
+            context["username"] = "新規ユーザー"
 
             try:
                 rental_umbrella = Umbrellas.objects.get(borrower=self.request.user)
