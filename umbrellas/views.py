@@ -39,7 +39,8 @@ class HomeView(TemplateView):
                 context["username"] = "新規ユーザー"
 
             try:
-                rental_umbrella = Umbrellas.objects.get(borrower=self.request.user)
+                if self.request.user.is_authenticated:
+                    rental_umbrella = Umbrellas.objects.get(borrower=self.request.user)
             except ObjectDoesNotExist:
                 rental_umbrella = None
             context["rental_umbrella"] = rental_umbrella
