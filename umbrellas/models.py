@@ -126,7 +126,7 @@ class Umbrellas(models.Model):
         ('Engineering faculty', '工学部棟'),
         ('Agriculture faculty', '農学部棟'),
         ('Sience faculty', '理系複合棟'),
-        ('Literal faculty', '文系複合棟'),
+        ('Literal faculty', '文系講義棟'),
         ('Senbaru domitory', '千原寮共用棟'),
     ]
 
