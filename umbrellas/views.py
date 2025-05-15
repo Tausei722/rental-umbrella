@@ -35,7 +35,8 @@ class HomeView(TemplateView):
             context = super().get_context_data(**kwargs)
             if not self.request.user is None:
                 context["username"] = self.request.user.username
-            context["username"] = "新規ユーザー"
+            else:
+                context["username"] = "新規ユーザー"
 
             try:
                 rental_umbrella = Umbrellas.objects.get(borrower=self.request.user)
