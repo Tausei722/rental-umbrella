@@ -418,11 +418,11 @@ class ContactView(LoginRequiredMixin, TemplateView):
         return render(request, 'pages/contact.html', {"form": form})
 
 class MapView(LoginRequiredMixin, TemplateView):
-    template_name = "pages/rental_check.html"
+    template_name = "pages/map.html"
 
     def get(self, request):
         form = MapForm()
-        return render(request, "pages/rental_check.html", {"form": form})
+        return render(request, "pages/map.html", {"form": form})
 
     def post(self, request):
         form = MapForm(request.POST)
@@ -432,9 +432,9 @@ class MapView(LoginRequiredMixin, TemplateView):
                 umbrellas = Umbrellas.objects.filter(place=place,borrower__isnull=True)
                 if umbrellas is not None:
                     print(umbrellas)
-                    return render(request, "pages/rental_check.html", {"form": form, "umbrellas": umbrellas})
+                    return render(request, "pages/map.html", {"form": form, "umbrellas": umbrellas})
                 else:
                     messages.success(request, "その場所に傘はありません")
             except Umbrellas.DoesNotExist:
                 messages.error(request, "エラーが発生しました")
-        return render(request, "pages/rental_check.html", {"form": form})
+        return render(request, "pages/map.html", {"form": form})
