@@ -30,8 +30,6 @@ def custom_404(request, exception):
 # ホームページのビュー
 class HomeView(TemplateView):
     template_name = "pages/home.html"
-    login_url = "/login/"
-    redirect_field_name = "next"
 
     def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
