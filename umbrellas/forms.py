@@ -149,7 +149,7 @@ class ContactForm(forms.ModelForm):
             }),
         }
 
-class RentalCheckForm(forms.ModelForm):
+class MapForm(forms.ModelForm):
     class Meta:
         model = Umbrellas
         fields = ["place",]
