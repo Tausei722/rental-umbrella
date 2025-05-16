@@ -6,6 +6,7 @@
 <form method="post" action="/login/">
   {% csrf_token %}
   <div class="w-full text-center flex flex-col justify-center items-center mt-10 gap-12">
+    <h1>ご利用の際にはログインをお願いします</h1>
     {% if form.errors %}
       {{form.errors}}
     {% endif %}

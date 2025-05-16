@@ -41,9 +41,10 @@ class HomeView(TemplateView):
         try:
             if self.request.user.is_authenticated:
                 rental_umbrella = Umbrellas.objects.get(borrower=self.request.user)
+            else:
+                rental_umbrella = None
         except ObjectDoesNotExist:
             rental_umbrella = None
-        rental_umbrella = None
         print(rental_umbrella,"cvdsfdgthryekdvc")
 
         context["rental_umbrella"] = rental_umbrella
