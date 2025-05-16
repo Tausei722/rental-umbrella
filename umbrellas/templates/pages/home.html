@@ -4,7 +4,9 @@
 
 {% block content %}
   <div class="px-4">
+    {% if username %}
     <h1>{{ username }} さん！</h1>
+    {% endif %}
     <h2>レンタル傘にようこそ</h2>
     <p>急な天候の変化に備えて誰でも自由に使える傘を設置しました</p>
     <p>ぜひご自由にお使いください</p>
