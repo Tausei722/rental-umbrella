@@ -132,17 +132,11 @@ class UmbrellaForm(forms.ModelForm):
 class ReturnForm(forms.ModelForm):
     class Meta:
         model = Umbrellas
-        fields = ["place", "umbrella_type"]
+        fields = ["place",]
 
     place = forms.ChoiceField(
         label="傘の場所",
         choices=Umbrellas.STATUS_PRACE,
-        required=True,
-    )
-
-    umbrella_type = forms.ChoiceField(
-        label="傘の種類",
-        choices=Umbrellas.STATUS_UMBRELLA_TYPE,
         required=True,
     )
 

@@ -297,10 +297,12 @@ class RentalAnotherForm(TemplateView):
 
             # 借りている人と今返却フォームを操作している人が同じか見る
             if rental_umbrella.borrower == request.user:
+                print(form.is_valid(),"trueorfalse")
                 if form.is_valid():
                     rental_umbrella.borrower = None
                     rental_umbrella.place = form.cleaned_data.get('place')
                     rental_umbrella.save()
+                    print(rental_umbrella.place,"rental_umbrella.place")
 
                     rental_log = RentalLog.objects.create(
                         user=request.user,
