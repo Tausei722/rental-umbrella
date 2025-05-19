@@ -30,7 +30,7 @@
 
       <button type="submit" name="lost" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">紛失届けを出す</button>
       <!-- ホームに戻す -->
-      <button class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">キャンセル</button>
+      <a href="{% url 'home' %}" class="btn-color-second w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">キャンセル</a>
     {% else %}
       <h1>借りている傘がありません</h1>
     {% endif %}
