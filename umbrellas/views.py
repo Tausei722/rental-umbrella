@@ -127,12 +127,12 @@ class RentalForm(TemplateView):
                 # すでにレンタルしているかどうか仕分ける
                 is_rentaled = Umbrellas.objects.get(borrower=request.user)
                 if is_rentaled:
-                    return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": False})
+                    return render(request, "pages/rental.html", {"form": form, "is_rentaled": False, "pk": self.kwargs['pk']})
                 else:
-                    return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": True})
+                    return render(request, "pages/rental.html", {"form": form, "is_rentaled": True, "pk": self.kwargs['pk']})
             except Umbrellas.DoesNotExist:
                 # そもそもログインしてなかったら
-                return render(request, "pages/rental_another.html", {"form": form, "is_rentaled": True})
+                return render(request, "pages/rental.html", {"form": form, "is_rentaled": True, "pk": self.kwargs['pk']})
 
         try:
             Umbrellas.objects.get(umbrella_name=self.kwargs['pk'])

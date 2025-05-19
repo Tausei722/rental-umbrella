@@ -111,11 +111,16 @@ class UmbrellaCreationForm(forms.Form):
         ('Literal faculty', '文系講義棟'),
         ('Senbaru domitory', '千原寮共用棟'),
     ], required=True)
+    umbrella_type = forms.ChoiceField(
+        label="傘の種類",
+        choices=Umbrellas.STATUS_UMBRELLA_TYPE,
+        required=True,
+    )
 
 class UmbrellaForm(forms.ModelForm):
     class Meta:
         model = Umbrellas
-        fields = ["umbrella_name", "borrower", "place", "is_lost"]
+        fields = ["umbrella_name", "borrower", "place", "is_lost", "umbrella_type"]
 
     borrower = forms.ModelChoiceField(
         queryset=CustomUser.objects.all(),
@@ -127,11 +132,17 @@ class UmbrellaForm(forms.ModelForm):
 class ReturnForm(forms.ModelForm):
     class Meta:
         model = Umbrellas
-        fields = ["place"]
+        fields = ["place", "umbrella_type"]
 
     place = forms.ChoiceField(
         label="傘の場所",
         choices=Umbrellas.STATUS_PRACE,
+        required=True,
+    )
+
+    umbrella_type = forms.ChoiceField(
+        label="傘の種類",
+        choices=Umbrellas.STATUS_UMBRELLA_TYPE,
         required=True,
     )
 

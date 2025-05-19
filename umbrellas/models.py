@@ -30,6 +30,11 @@ STATUS_SEX = [
         ('no answer', '解答しない'),
     ]
 
+STATUS_UMBRELLA_TYPE = [
+    ('rain', '雨傘'),
+    ('sun', '日傘'),
+]
+
 class CustomUserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -129,6 +134,10 @@ class Umbrellas(models.Model):
         ('Literal faculty', '文系講義棟'),
         ('Senbaru domitory', '千原寮共用棟'),
     ]
+    STATUS_UMBRELLA_TYPE = [
+        ('rain', '雨傘'),
+        ('sun', '日傘'),
+    ]
 
     umbrella_name = models.CharField("傘整理番号",max_length=225)
     borrower = models.ForeignKey(CustomUser,verbose_name="貸出者",null=True,blank=True,on_delete=models.SET_NULL,related_name='borrowed_user')
@@ -137,6 +146,7 @@ class Umbrellas(models.Model):
     last_lend = models.DateField("最後に貸出(返却)した日", null=True)
     create_at = models.DateField("入荷日",auto_now_add=True, null=True)
     update_at = models.DateField("最後に貸出(返却)した日",auto_now=True, null=True)
+    umbrella_type = models.CharField("傘の種類",max_length=225,choices=STATUS_UMBRELLA_TYPE,default='rain')
 
     def __str__(self):
         return self.umbrella_name
@@ -175,7 +185,7 @@ class Prace(models.Model):
 
     def __str__(self):
         return self.prace_name
-    
+
 # どの傘が誰にいつ借りられたか（返されたか）を記録するDB
 class RentalLog(models.Model):
     create_at = models.DateField("ログ",auto_now=True, null=True)

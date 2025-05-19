@@ -19,9 +19,9 @@ class CustomUserAdmin(admin.ModelAdmin):
     list_filter = ("faculty", "grade", "sex")
 
 class UmbrellaAdmin(admin.ModelAdmin):
-    list_display = ("umbrella_name", "borrower", "place", "is_lost", "create_at", "update_at", "create_buttons")
+    list_display = ("umbrella_name", "borrower", "place", "is_lost", "umbrella_type", "create_at", "update_at", "create_buttons")
     search_fields = ("borrower__icontains",)
-    list_filter = ("place", "is_lost")
+    list_filter = ("place", "is_lost", "umbrella_type", "create_at", "update_at")
     actions = ["create_umbrella_view"]
     form = UmbrellaForm
 
@@ -45,11 +45,13 @@ class UmbrellaAdmin(admin.ModelAdmin):
             if form.is_valid():
                 new_umbrellas = form.cleaned_data["new_umbrellas"]
                 place = form.cleaned_data["place"]
+                umbrella_type = form.cleaned_data["umbrella_type"]
+                print(f"新しい傘の数: {new_umbrellas}, 場所: {place}, 種類: {umbrella_type}","gthryjukiytrhteg")
 
                 command = Command()
-                command.handle(new_umbrellas=new_umbrellas, place=place)
+                command.handle(new_umbrellas=new_umbrellas, place=place, umbrella_type=umbrella_type)
 
-                self.message_user(request, f"✅ {new_umbrellas} 本の傘を {place} に作成しました！")
+                self.message_user(request, f"✅ {new_umbrellas} 本の{umbrella_type}を {place} に作成しました！")
                 return redirect("/admin_share_kasa/umbrellas/")
         else:
             form = UmbrellaCreationForm()

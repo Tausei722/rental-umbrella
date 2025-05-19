@@ -25,6 +25,18 @@
       {% else %}
         <p>返却(または貸出)するには傘番号をフォームに入力してください</p>
       {% endif %}
+
+      {% if is_rentaled %}
+      <label for="雨傘 or 日傘">雨傘 or 日傘</label>
+      <div class="border border-black">
+        {{ form.umbrella_type }}
+        {% if form.umbrella_type.errors %}
+        <div class="error">
+          {{ form.umbrella_type.errors }}
+        </div>
+        {% endif %}        
+      </div>
+      {% endif %}
     </div>
     {% if is_rentaled %}
       <button type="submit" name="lend" class="btn-color w-2/3 text-3xl mt-8 mb-16 px-8 py-8 cursor-pointer">レンタル</button>
