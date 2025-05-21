@@ -18,6 +18,7 @@ from django.contrib.auth.tokens import default_token_generator
 from .models import CustomUser
 from django.core.mail import send_mail
 from datetime import datetime, timedelta
+from django.templatetags.static import static
 
 from django.conf import settings
 import os
@@ -446,9 +447,7 @@ class MapView(LoginRequiredMixin, TemplateView):
             except Umbrellas.DoesNotExist:
                 messages.error(request, "エラーが発生しました")
         return render(request, "pages/map.html", {"form": form})
-    
-class AgreementView(TemplateView):
-    template_name = "pages/agrreement.html"
 
-    def get(self, request):
-        return render(request, "pages/agreement.html")
+def pdf_redirect_view(request):
+    pdf_url = static("pdfs/Agreement.pdf")
+    return redirect(pdf_url)
