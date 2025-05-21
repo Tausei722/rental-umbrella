@@ -76,7 +76,7 @@
     </div>
 
     <div class="w-1/2 h-full px-3 py-3 rounded-md content-shadow content-color sm:w-4/5 sm:px-10">
-      <label class="w-hull flex items-center grid place-items-center text-[20px] md:text-[25px]" for="{{ form.sex.id_for_label }}">利用規約に同意する</label>
+      <label class="w-hull flex items-center grid place-items-center text-[20px] md:text-[25px]" for="{{ form.sex.id_for_label }}"><a href="{% url 'agreement' %}">利用規約に同意する</a></label>
       <input type="checkbox" name="consensus" required>
     </div>
 

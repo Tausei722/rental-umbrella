@@ -446,3 +446,9 @@ class MapView(LoginRequiredMixin, TemplateView):
             except Umbrellas.DoesNotExist:
                 messages.error(request, "エラーが発生しました")
         return render(request, "pages/map.html", {"form": form})
+    
+class AgreementView(TemplateView):
+    template_name = "pages/agrreement.html"
+
+    def get(self, request):
+        return render(request, "pages/agreement.html")
