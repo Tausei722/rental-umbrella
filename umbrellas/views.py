@@ -449,5 +449,5 @@ class MapView(LoginRequiredMixin, TemplateView):
         return render(request, "pages/map.html", {"form": form})
 
 def pdf_redirect_view(request):
-    pdf_url = static("pdfs/Agreement.pdf")
+    pdf_url = static("pdfs/Agreements.pdf")
     return redirect(pdf_url)
